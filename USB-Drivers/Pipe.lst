@@ -6,75 +6,96 @@
    6               	__zero_reg__ = 1
    7               		.text
    8               	.Ltext0:
-   9               		.section	.gnu.lto_.profile.e2e3436c263f6a54,"",@progbits
-  10 0000 789C 6366 		.string	"x\234cf```d\200\002"
-  10      6060 6064 
-  10      8002 00
+   9               		.section	.gnu.lto_.profile.49e5db0c26f102f6,"",@progbits
+  10 0000 789C 6361 		.string	"x\234ca```\004b\006"
+  10      6060 6004 
+  10      6206 00
   11 000b 00        		.string	""
-  12 000c 3D00      		.string	"="
-  13 000e 05        		.ascii	"\005"
+  12 000c 3200      		.string	"2"
+  13 000e 06        		.ascii	"\006"
   14               		.text
-  15               		.section	.gnu.lto_.inline.e2e3436c263f6a54,"",@progbits
-  16 0000 789C 6366 		.string	"x\234cf\300\016\230\340,"
-  16      C00E 98E0 
-  16      2C00 
-  17 000a 00        		.string	""
-  18 000b 9C00      		.string	"\234"
-  19 000d 06        		.ascii	"\006"
-  20               		.text
-  21               		.section	.gnu.lto_.pureconst.e2e3436c263f6a54,"",@progbits
-  22 0000 789C 6366 		.string	"x\234cf```d\200\002"
-  22      6060 6064 
-  22      8002 00
-  23 000b 00        		.string	""
-  24 000c 3D00      		.string	"="
-  25 000e 05        		.ascii	"\005"
-  26               		.text
-  27               		.section	.gnu.lto_.symbol_nodes.e2e3436c263f6a54,"",@progbits
-  28 0000 789C 6366 		.string	"x\234cf```b\200\001"
-  28      6060 6062 
-  28      8001 00
-  29 000b 00        		.string	""
-  30 000c 4C00      		.string	"L"
-  31 000e 06        		.ascii	"\006"
-  32               		.text
-  33               		.section	.gnu.lto_.refs.e2e3436c263f6a54,"",@progbits
-  34 0000 789C 6366 		.string	"x\234cf```d\200\002"
-  34      6060 6064 
-  34      8002 00
+  15               		.section	.gnu.lto_.icf.49e5db0c26f102f6,"",@progbits
+  16 0000 789C 6361 		.string	"x\234ca\200"
+  16      8000 
+  17 0006 2606 6400 		.string	"&\006d"
+  18 000a 00        		.string	""
+  19 000b 00        		.string	""
+  20 000c 8A00      		.string	"\212"
+  21 000e 07        		.ascii	"\007"
+  22               		.text
+  23               		.section	.gnu.lto_.jmpfuncs.49e5db0c26f102f6,"",@progbits
+  24 0000 789C 6361 		.string	"x\234ca\200"
+  24      8000 
+  25 0006 2606 6400 		.string	"&\006d"
+  26 000a 00        		.string	""
+  27 000b 00        		.string	""
+  28 000c 8A00      		.string	"\212"
+  29 000e 07        		.ascii	"\007"
+  30               		.text
+  31               		.section	.gnu.lto_.inline.49e5db0c26f102f6,"",@progbits
+  32 0000 789C 6361 		.string	"x\234ca\200"
+  32      8000 
+  33 0006 2606 6400 		.string	"&\006d"
+  34 000a 00        		.string	""
   35 000b 00        		.string	""
-  36 000c 3D00      		.string	"="
-  37 000e 05        		.ascii	"\005"
+  36 000c 8A00      		.string	"\212"
+  37 000e 07        		.ascii	"\007"
   38               		.text
-  39               		.section	.gnu.lto_.decls.e2e3436c263f6a54,"",@progbits
-  40 0000 789C 6366 		.string	"x\234cf``P\001\342\377@"
-  40      6060 5001 
-  40      E2FF 4000 
-  41 000c A418 18A1 		.string	"\244\030\030\2418\200\201"
-  41      3880 8100 
-  42 0014 00        		.string	""
-  43 0015 00        		.string	""
-  44 0016 D038 0476 		.ascii	"\3208\004v"
-  45               		.text
-  46               		.section	.gnu.lto_.symtab.e2e3436c263f6a54,"",@progbits
-  47               		.text
-  48               		.section	.gnu.lto_.opts,"",@progbits
-  49 0000 272D 666E 		.string	"'-fno-trapv' '-mmcu=atmega16u2' '-gdwarf-2' '-O3' '-funsigned-char' '-fpack-struct' '-fno
-  49      6F2D 7472 
-  49      6170 7627 
-  49      2027 2D6D 
-  49      6D63 753D 
-  50               		.text
-  51               		.comm	__gnu_lto_v1,1,1
-  52               		.comm	__gnu_lto_slim,1,1
-  53               		.ident	"GCC: (GNU) 4.9.2 20141224 (prerelease)"
+  39               		.section	.gnu.lto_.pureconst.49e5db0c26f102f6,"",@progbits
+  40 0000 789C 6361 		.string	"x\234ca```\004b\006"
+  40      6060 6004 
+  40      6206 00
+  41 000b 00        		.string	""
+  42 000c 3200      		.string	"2"
+  43 000e 06        		.ascii	"\006"
+  44               		.text
+  45               		.section	.gnu.lto_.symbol_nodes.49e5db0c26f102f6,"",@progbits
+  46 0000 789C 6361 		.string	"x\234ca```b"
+  46      6060 6062 
+  46      00
+  47 0009 0100      		.string	"\001"
+  48 000b 00        		.string	""
+  49 000c 3E00      		.string	">"
+  50 000e 07        		.ascii	"\007"
+  51               		.text
+  52               		.section	.gnu.lto_.refs.49e5db0c26f102f6,"",@progbits
+  53 0000 789C 6361 		.string	"x\234ca```\004b\006"
+  53      6060 6004 
+  53      6206 00
+  54 000b 00        		.string	""
+  55 000c 3200      		.string	"2"
+  56 000e 06        		.ascii	"\006"
+  57               		.text
+  58               		.section	.gnu.lto_.decls.49e5db0c26f102f6,"",@progbits
+  59 0000 789C 6361 		.string	"x\234ca@"
+  59      4000 
+  60 0006 4620 5601 		.string	"F V\001\342\377@"
+  60      E2FF 4000 
+  61 000e 6287 3110 		.string	"b\2071\020"
+  61      00
+  62 0013 00        		.string	""
+  63 0014 B053 047D 		.ascii	"\260S\004}"
+  64               		.text
+  65               		.section	.gnu.lto_.symtab.49e5db0c26f102f6,"",@progbits
+  66               		.text
+  67               		.section	.gnu.lto_.opts,"",@progbits
+  68 0000 27        		.ascii	"'"
+  69 0001 2D66 6D61 		.string	"-fmath-errno' '-fsigned-zeros' '-ftrapping-math' '-fno-trapv' '-fno-openmp' '-fno-openacc
+  69      7468 2D65 
+  69      7272 6E6F 
+  69      2720 272D 
+  69      6673 6967 
+  70               		.text
+  71               		.comm	__gnu_lto_v1,1,1
+  72               		.comm	__gnu_lto_slim,1,1
+  73               		.ident	"GCC: (GNU) 5.1.1 20150520"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 Pipe.c
-     /tmp/cc2byvOS.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cc2byvOS.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cc2byvOS.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cc2byvOS.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cc2byvOS.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccF6hgNI.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccF6hgNI.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccF6hgNI.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccF6hgNI.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccF6hgNI.s:6      *ABS*:0000000000000001 __zero_reg__
                             *COM*:0000000000000001 __gnu_lto_v1
                             *COM*:0000000000000001 __gnu_lto_slim
 

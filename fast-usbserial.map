@@ -1,37 +1,33 @@
 Archive member included to satisfy reference by file (symbol)
 
-/usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
-                              /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o (exit)
-/usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a(eerd_byte_atmega16u2.o)
-                              USB-Drivers/Endpoint.o (symbol from plugin) (__eerd_byte_m16u2)
-/usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a(eeupd_byte_atmega16u2.o)
-                              USB-Drivers/Endpoint.o (symbol from plugin) (__eeupd_byte_m16u2)
-/usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_udivmodsi4.o)
-                              /tmp/cc9Dtwua.lto.o (__udivmodsi4)
-/usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_tablejump2.o)
-                              /tmp/cc9Dtwua.lto.o (__tablejump2__)
-/usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
-                              /tmp/cc9Dtwua.lto.o (__do_copy_data)
-/usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
-                              /tmp/cc9Dtwua.lto.o (__do_clear_bss)
+/home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
+                              /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o (exit)
+/home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a(eerd_byte.o)
+                              USB-Drivers/Endpoint.o (symbol from plugin) (eeprom_read_byte)
+/home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a(eeupd_byte.o)
+                              USB-Drivers/Endpoint.o (symbol from plugin) (eeprom_update_byte)
+/home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
+                              /tmp/cc8DoIZb.lto.o (__udivmodsi4)
+/home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
+                              /tmp/cc8DoIZb.lto.o (__tablejump2__)
+/home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
+                              /tmp/cc8DoIZb.lto.o (__do_copy_data)
+/home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
+                              /tmp/cc8DoIZb.lto.o (__do_clear_bss)
 
 Allocating common symbols
 Common symbol       size              file
 
 USB_IsInitialized   0x1               USB-Drivers/USBTask.o (symbol from plugin)
-USB_CurrentlySelfPowered
-                    0x1               USB-Drivers/DeviceStandardReq.o (symbol from plugin)
-USB_RemoteWakeupEnabled
-                    0x1               USB-Drivers/DeviceStandardReq.o (symbol from plugin)
-PulseMSRemaining    0x3               fast-usbserial.o (symbol from plugin)
+PulseMSRemaining    0x2               fast-usbserial.o (symbol from plugin)
 USB_ControlRequest  0x8               USB-Drivers/USBTask.o (symbol from plugin)
 USB_ConfigurationNumber
                     0x1               USB-Drivers/DeviceStandardReq.o (symbol from plugin)
 
 Discarded input sections
 
- .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
- .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
+ .data          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+ .bss           0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
  .text          0x0000000000000000        0x0 fast-usbserial.o (symbol from plugin)
  .text          0x0000000000000000        0x0 Descriptors.o (symbol from plugin)
  .text          0x0000000000000000        0x0 USB-Drivers/Device.o (symbol from plugin)
@@ -44,93 +40,93 @@ Discarded input sections
  .text          0x0000000000000000        0x0 USB-Drivers/Events.o (symbol from plugin)
  .text          0x0000000000000000        0x0 USB-Drivers/USBTask.o (symbol from plugin)
  .text          0x0000000000000000        0x0 USB-Drivers/CDC.o (symbol from plugin)
- .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
- .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
- .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
+ .text          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
+ .data          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
+ .bss           0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
  .text.libgcc.mul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
  .text.libgcc.div
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
- .text.libgcc   0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
+ .text.libgcc   0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
  .text.libgcc.prologue
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
  .text.libgcc.builtins
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
  .text.libgcc.fmul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
  .text.libgcc.fixed
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
- .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a(eerd_byte_atmega16u2.o)
- .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a(eerd_byte_atmega16u2.o)
- .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a(eerd_byte_atmega16u2.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
+ .text          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a(eerd_byte.o)
+ .data          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a(eerd_byte.o)
+ .bss           0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a(eerd_byte.o)
  .text.avr-libc
-                0x0000000000000000       0x10 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a(eerd_byte_atmega16u2.o)
- .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a(eeupd_byte_atmega16u2.o)
- .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a(eeupd_byte_atmega16u2.o)
- .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a(eeupd_byte_atmega16u2.o)
+                0x0000000000000000       0x10 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a(eerd_byte.o)
+ .text          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a(eeupd_byte.o)
+ .data          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a(eeupd_byte.o)
+ .bss           0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a(eeupd_byte.o)
  .text.avr-libc
-                0x0000000000000000       0x24 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a(eeupd_byte_atmega16u2.o)
- .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_udivmodsi4.o)
- .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_udivmodsi4.o)
- .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_udivmodsi4.o)
+                0x0000000000000000       0x24 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a(eeupd_byte.o)
+ .text          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
+ .data          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
+ .bss           0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
  .text.libgcc.mul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_udivmodsi4.o)
- .text.libgcc   0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_udivmodsi4.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
+ .text.libgcc   0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
  .text.libgcc.prologue
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_udivmodsi4.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
  .text.libgcc.builtins
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_udivmodsi4.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
  .text.libgcc.fmul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_udivmodsi4.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
  .text.libgcc.fixed
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_udivmodsi4.o)
- .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_tablejump2.o)
- .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_tablejump2.o)
- .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_tablejump2.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
+ .text          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
+ .data          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
+ .bss           0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
  .text.libgcc.mul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_tablejump2.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
  .text.libgcc.div
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_tablejump2.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
  .text.libgcc.prologue
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_tablejump2.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
  .text.libgcc.builtins
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_tablejump2.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
  .text.libgcc.fmul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_tablejump2.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
  .text.libgcc.fixed
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_tablejump2.o)
- .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
- .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
- .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
+ .text          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
+ .data          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
+ .bss           0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
  .text.libgcc.mul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
  .text.libgcc.div
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
- .text.libgcc   0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
+ .text.libgcc   0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
  .text.libgcc.prologue
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
  .text.libgcc.builtins
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
  .text.libgcc.fmul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
  .text.libgcc.fixed
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
- .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
- .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
- .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
+ .text          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
+ .data          0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
+ .bss           0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
  .text.libgcc.mul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
  .text.libgcc.div
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
- .text.libgcc   0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
+ .text.libgcc   0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
  .text.libgcc.prologue
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
  .text.libgcc.builtins
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
  .text.libgcc.fmul
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
  .text.libgcc.fixed
-                0x0000000000000000        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
+                0x0000000000000000        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
 
 Memory Configuration
 
@@ -146,9 +142,9 @@ signature        0x0000000000840000 0x0000000000000400 rw !x
 Linker script and memory map
 
 Address of section .data set to 0x800100
-LOAD /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
+LOAD /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
 LOAD fast-usbserial.o
-LOAD /tmp/cc9Dtwua.lto.o
+LOAD /tmp/cc8DoIZb.lto.o
 LOAD Descriptors.o
 LOAD USB-Drivers/Device.o
 LOAD USB-Drivers/Endpoint.o
@@ -160,11 +156,13 @@ LOAD USB-Drivers/DeviceStandardReq.o
 LOAD USB-Drivers/Events.o
 LOAD USB-Drivers/USBTask.o
 LOAD USB-Drivers/CDC.o
-LOAD /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libm.a
+Address of section .data set to 0x800200
+LOAD /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libm.a
 START GROUP
-LOAD /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a
-LOAD /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libm.a
-LOAD /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a
+LOAD /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a
+LOAD /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libm.a
+LOAD /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libc.a
+LOAD /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a
 END GROUP
 
 .hash
@@ -257,15 +255,15 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x0000000000000000     0x12b8
+.text           0x0000000000000000     0x1280
  *(.vectors)
- .vectors       0x0000000000000000       0x74 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
+ .vectors       0x0000000000000000       0x74 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
                 0x0000000000000000                __vectors
                 0x0000000000000000                __vector_default
  *(.vectors)
  *(.progmem.gcc*)
  .progmem.gcc_sw_table
-                0x0000000000000074       0x14 /tmp/cc9Dtwua.lto.o
+                0x0000000000000074       0x14 /tmp/cc8DoIZb.lto.o
                 0x0000000000000088                . = ALIGN (0x2)
                 0x0000000000000088                __trampolines_start = .
  *(.trampolines)
@@ -273,7 +271,7 @@ END GROUP
  *(.trampolines*)
                 0x0000000000000088                __trampolines_end = .
  *(.progmem*)
- .progmem.data  0x0000000000000088       0xa2 /tmp/cc9Dtwua.lto.o
+ .progmem.data  0x0000000000000088       0xa2 /tmp/cc8DoIZb.lto.o
                 0x000000000000012a                . = ALIGN (0x2)
  *(.jumptables)
  *(.jumptables*)
@@ -288,20 +286,20 @@ END GROUP
  SORT(*)(.ctors)
  SORT(*)(.dtors)
  *(.init0)
- .init0         0x000000000000012a        0x0 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
+ .init0         0x000000000000012a        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
                 0x000000000000012a                __init
  *(.init0)
  *(.init1)
  *(.init1)
  *(.init2)
- .init2         0x000000000000012a        0xc /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
+ .init2         0x000000000000012a        0xc /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
  *(.init2)
  *(.init3)
  *(.init3)
  *(.init4)
- .init4         0x0000000000000136       0x16 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
+ .init4         0x0000000000000136       0x16 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
                 0x0000000000000136                __do_copy_data
- .init4         0x000000000000014c       0x10 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
+ .init4         0x000000000000014c       0x10 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
                 0x000000000000014c                __do_clear_bss
  *(.init4)
  *(.init5)
@@ -313,14 +311,15 @@ END GROUP
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x000000000000015c        0x6 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
+ .init9         0x000000000000015c        0x6 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
  *(.init9)
  *(.text)
- .text          0x0000000000000162        0x2 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
+ .text          0x0000000000000162        0x2 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
                 0x0000000000000162                __vector_22
                 0x0000000000000162                __vector_28
                 0x0000000000000162                __vector_1
                 0x0000000000000162                __vector_24
+                0x0000000000000162                __vector_12
                 0x0000000000000162                __bad_interrupt
                 0x0000000000000162                __vector_6
                 0x0000000000000162                __vector_3
@@ -343,24 +342,23 @@ END GROUP
                 0x0000000000000162                __vector_16
                 0x0000000000000162                __vector_18
                 0x0000000000000162                __vector_20
- .text          0x0000000000000164      0xe60 /tmp/cc9Dtwua.lto.o
-                0x0000000000000d22                __vector_23
-                0x0000000000000d6e                __vector_11
-                0x0000000000000f42                __vector_12
-                0x0000000000000fc4                . = ALIGN (0x2)
+ .text          0x0000000000000164      0x3fe /tmp/cc8DoIZb.lto.o
+                0x0000000000000350                __vector_23
+                0x0000000000000398                __vector_11
+                0x0000000000000562                . = ALIGN (0x2)
  *(.text.*)
- .text.startup  0x0000000000000fc4      0x2a0 /tmp/cc9Dtwua.lto.o
-                0x0000000000000fc4                main
+ .text.startup  0x0000000000000562      0xcca /tmp/cc8DoIZb.lto.o
+                0x0000000000000562                main
  .text.libgcc.div
-                0x0000000000001264       0x44 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_udivmodsi4.o)
-                0x0000000000001264                __udivmodsi4
- .text.libgcc   0x00000000000012a8        0xc /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_tablejump2.o)
-                0x00000000000012a8                __tablejump2__
-                0x00000000000012b4                . = ALIGN (0x2)
+                0x000000000000122c       0x44 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
+                0x000000000000122c                __udivmodsi4
+ .text.libgcc   0x0000000000001270        0xc /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
+                0x0000000000001270                __tablejump2__
+                0x000000000000127c                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000000000012b4        0x0 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
-                0x00000000000012b4                exit
-                0x00000000000012b4                _exit
+ .fini9         0x000000000000127c        0x0 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
+                0x000000000000127c                exit
+                0x000000000000127c                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -379,38 +377,38 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000000000012b4        0x4 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
+ .fini0         0x000000000000127c        0x4 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
  *(.fini0)
-                0x00000000000012b8                _etext = .
+                0x0000000000001280                _etext = .
 
-.data           0x0000000000800100       0x16 load address 0x00000000000012b8
-                0x0000000000800100                PROVIDE (__data_start, .)
+.data           0x0000000000800200       0x16 load address 0x0000000000001280
+                0x0000000000800200                PROVIDE (__data_start, .)
  *(.data)
- .data          0x0000000000800100       0x16 /tmp/cc9Dtwua.lto.o
+ .data          0x0000000000800200       0x16 /tmp/cc8DoIZb.lto.o
  *(.data*)
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.d*)
-                0x0000000000800116                . = ALIGN (0x2)
-                0x0000000000800116                _edata = .
-                0x0000000000800116                PROVIDE (__data_end, .)
+                0x0000000000800216                . = ALIGN (0x2)
+                0x0000000000800216                _edata = .
+                0x0000000000800216                PROVIDE (__data_end, .)
 
-.bss            0x0000000000800116      0x194
-                0x0000000000800116                PROVIDE (__bss_start, .)
+.bss            0x0000000000800216       0x51
+                0x0000000000800216                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x0000000000800116      0x194 /tmp/cc9Dtwua.lto.o
+ .bss           0x0000000000800216       0x51 /tmp/cc8DoIZb.lto.o
  *(.bss*)
  *(COMMON)
-                0x00000000008002aa                PROVIDE (__bss_end, .)
-                0x00000000000012b8                __data_load_start = LOADADDR (.data)
-                0x00000000000012ce                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0000000000800267                PROVIDE (__bss_end, .)
+                0x0000000000001280                __data_load_start = LOADADDR (.data)
+                0x0000000000001296                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00000000008002aa        0x0
-                0x00000000008002aa                PROVIDE (__noinit_start, .)
+.noinit         0x0000000000800267        0x0
+                0x0000000000800267                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x00000000008002aa                PROVIDE (__noinit_end, .)
-                0x00000000008002aa                _end = .
-                0x00000000008002aa                PROVIDE (__heap_start, .)
+                0x0000000000800267                PROVIDE (__noinit_end, .)
+                0x0000000000800267                _end = .
+                0x0000000000800267                PROVIDE (__heap_start, .)
 
 .eeprom         0x0000000000810000        0x0
  *(.eeprom*)
@@ -446,10 +444,15 @@ END GROUP
 .stab.indexstr
  *(.stab.indexstr)
 
-.comment        0x0000000000000000       0x27
+.comment        0x0000000000000000       0x1a
  *(.comment)
- .comment       0x0000000000000000       0x27 /tmp/cc9Dtwua.lto.o
-                                         0x28 (size before relaxing)
+ .comment       0x0000000000000000       0x1a /tmp/cc8DoIZb.lto.o
+                                         0x1b (size before relaxing)
+
+.note.gnu.avr.deviceinfo
+                0x0000000000000000       0x40
+ .note.gnu.avr.deviceinfo
+                0x0000000000000000       0x40 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
 
 .note.gnu.build-id
  *(.note.gnu.build-id)
@@ -466,42 +469,67 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x0000000000000000       0x28
+.debug_aranges  0x0000000000000000       0xc8
  *(.debug_aranges)
  .debug_aranges
-                0x0000000000000000       0x28 /tmp/cc9Dtwua.lto.o
+                0x0000000000000000       0x28 /tmp/cc8DoIZb.lto.o
+ .debug_aranges
+                0x0000000000000028       0x20 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
+ .debug_aranges
+                0x0000000000000048       0x20 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
+ .debug_aranges
+                0x0000000000000068       0x20 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
+ .debug_aranges
+                0x0000000000000088       0x20 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
+ .debug_aranges
+                0x00000000000000a8       0x20 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x0000000000000000     0x2ad7
+.debug_info     0x0000000000000000     0x2b3c
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x0000000000000000      0x6ba /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
- .debug_info    0x00000000000006ba     0x241d /tmp/cc9Dtwua.lto.o
+ .debug_info    0x0000000000000000      0x6ba /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+ .debug_info    0x00000000000006ba     0x21d0 /tmp/cc8DoIZb.lto.o
+ .debug_info    0x000000000000288a       0x8a /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
+ .debug_info    0x0000000000002914       0x8a /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
+ .debug_info    0x000000000000299e       0x8a /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
+ .debug_info    0x0000000000002a28       0x8a /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
+ .debug_info    0x0000000000002ab2       0x8a /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
 
-.debug_abbrev   0x0000000000000000      0xa40
+.debug_abbrev   0x0000000000000000      0xa4f
  *(.debug_abbrev)
- .debug_abbrev  0x0000000000000000      0x65d /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
- .debug_abbrev  0x000000000000065d      0x3e3 /tmp/cc9Dtwua.lto.o
+ .debug_abbrev  0x0000000000000000      0x65d /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+ .debug_abbrev  0x000000000000065d      0x38e /tmp/cc8DoIZb.lto.o
+ .debug_abbrev  0x00000000000009eb       0x14 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
+ .debug_abbrev  0x00000000000009ff       0x14 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
+ .debug_abbrev  0x0000000000000a13       0x14 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
+ .debug_abbrev  0x0000000000000a27       0x14 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
+ .debug_abbrev  0x0000000000000a3b       0x14 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
 
-.debug_line     0x0000000000000000      0xb38
+.debug_line     0x0000000000000000      0xd99
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x0000000000000000       0x1d /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
- .debug_line    0x000000000000001d      0xb1b /tmp/cc9Dtwua.lto.o
+ .debug_line    0x0000000000000000       0x1d /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+ .debug_line    0x000000000000001d      0xb80 /tmp/cc8DoIZb.lto.o
+ .debug_line    0x0000000000000b9d       0x5b /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
+ .debug_line    0x0000000000000bf8       0x7b /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
+ .debug_line    0x0000000000000c73       0x61 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
+ .debug_line    0x0000000000000cd4       0x64 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
+ .debug_line    0x0000000000000d38       0x61 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
 
-.debug_frame    0x0000000000000000      0x134
+.debug_frame    0x0000000000000000       0x98
  *(.debug_frame)
- .debug_frame   0x0000000000000000      0x134 /tmp/cc9Dtwua.lto.o
+ .debug_frame   0x0000000000000000       0x98 /tmp/cc8DoIZb.lto.o
 
-.debug_str      0x0000000000000000     0x139e
+.debug_str      0x0000000000000000     0x1314
  *(.debug_str)
- .debug_str     0x0000000000000000      0x262 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
- .debug_str     0x0000000000000262     0x113c /tmp/cc9Dtwua.lto.o
-                                       0x11ef (size before relaxing)
+ .debug_str     0x0000000000000000      0x265 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+ .debug_str     0x0000000000000265     0x10af /tmp/cc8DoIZb.lto.o
+                                       0x1160 (size before relaxing)
 
-.debug_loc      0x0000000000000000     0x1fac
+.debug_loc      0x0000000000000000     0x1c9e
  *(.debug_loc)
- .debug_loc     0x0000000000000000     0x1fac /tmp/cc9Dtwua.lto.o
+ .debug_loc     0x0000000000000000     0x1c9e /tmp/cc8DoIZb.lto.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -521,9 +549,9 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x0000000000000000      0x718
+.debug_ranges   0x0000000000000000      0xa60
  *(.debug_ranges)
- .debug_ranges  0x0000000000000000      0x718 /tmp/cc9Dtwua.lto.o
+ .debug_ranges  0x0000000000000000      0xa60 /tmp/cc8DoIZb.lto.o
 
 .debug_macro
  *(.debug_macro)
@@ -622,11 +650,8 @@ USB_ControlRequest                                USB-Drivers/USBTask.o (symbol 
                                                   USB-Drivers/CDC.o (symbol from plugin)
                                                   USB-Drivers/DeviceStandardReq.o (symbol from plugin)
                                                   USB-Drivers/Endpoint.o (symbol from plugin)
-USB_CurrentlySelfPowered                          USB-Drivers/DeviceStandardReq.o (symbol from plugin)
-                                                  USB-Drivers/USBController.o (symbol from plugin)
 USB_Device_ProcessControlRequest                  USB-Drivers/DeviceStandardReq.o (symbol from plugin)
                                                   USB-Drivers/USBTask.o (symbol from plugin)
-                                                  USB-Drivers/USBInterrupt.o (symbol from plugin)
 USB_Device_SendRemoteWakeup                       USB-Drivers/Device.o (symbol from plugin)
 USB_Event_Stub                                    USB-Drivers/Events.o (symbol from plugin)
 USB_GetNextDescriptorComp                         USB-Drivers/ConfigDescriptor.o (symbol from plugin)
@@ -641,75 +666,71 @@ USB_Init                                          USB-Drivers/USBController.o (s
                                                   fast-usbserial.o (symbol from plugin)
 USB_IsInitialized                                 USB-Drivers/USBTask.o (symbol from plugin)
                                                   USB-Drivers/USBController.o (symbol from plugin)
-USB_RemoteWakeupEnabled                           USB-Drivers/DeviceStandardReq.o (symbol from plugin)
-                                                  USB-Drivers/USBController.o (symbol from plugin)
 USB_ResetInterface                                USB-Drivers/USBController.o (symbol from plugin)
 USB_ShutDown                                      USB-Drivers/USBController.o (symbol from plugin)
 USB_USBTask                                       USB-Drivers/USBTask.o (symbol from plugin)
                                                   USB-Drivers/CDC.o (symbol from plugin)
                                                   fast-usbserial.o (symbol from plugin)
 VirtualSerial_CDC_Interface                       fast-usbserial.o (symbol from plugin)
-__bad_interrupt                                   /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__bss_end                                         /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
-__bss_start                                       /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
-__data_end                                        /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
-__data_load_start                                 /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
-__data_start                                      /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
-__do_clear_bss                                    /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_clear_bss.o)
-                                                  /tmp/cc9Dtwua.lto.o
-__do_copy_data                                    /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_copy_data.o)
-                                                  /tmp/cc9Dtwua.lto.o
-__eerd_byte_m16u2                                 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a(eerd_byte_atmega16u2.o)
-                                                  USB-Drivers/Endpoint.o (symbol from plugin)
-__eeupd_byte_m16u2                                /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a(eeupd_byte_atmega16u2.o)
-                                                  USB-Drivers/Endpoint.o (symbol from plugin)
-__eeupd_r18_m16u2                                 /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/libc.a(eeupd_byte_atmega16u2.o)
-__heap_end                                        /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__init                                            /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__stack                                           /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__tablejump2__                                    /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_tablejump2.o)
-                                                  /tmp/cc9Dtwua.lto.o
-__udivmodsi4                                      /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_udivmodsi4.o)
-                                                  /tmp/cc9Dtwua.lto.o
-__vector_1                                        /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_10                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_11                                       /tmp/cc9Dtwua.lto.o
+__bad_interrupt                                   /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__bss_end                                         /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
+__bss_start                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
+__data_end                                        /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
+__data_load_start                                 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
+__data_start                                      /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
+__do_clear_bss                                    /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_clear_bss.o)
+                                                  /tmp/cc8DoIZb.lto.o
+__do_copy_data                                    /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_copy_data.o)
+                                                  /tmp/cc8DoIZb.lto.o
+__heap_end                                        /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__init                                            /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__stack                                           /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__tablejump2__                                    /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_tablejump2.o)
+                                                  /tmp/cc8DoIZb.lto.o
+__udivmodsi4                                      /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_udivmodsi4.o)
+                                                  /tmp/cc8DoIZb.lto.o
+__vector_1                                        /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_10                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_11                                       /tmp/cc8DoIZb.lto.o
                                                   USB-Drivers/USBInterrupt.o (symbol from plugin)
-                                                  /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_12                                       /tmp/cc9Dtwua.lto.o
-                                                  USB-Drivers/USBInterrupt.o (symbol from plugin)
-                                                  /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_13                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_14                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_15                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_16                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_17                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_18                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_19                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_2                                        /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_20                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_21                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_22                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_23                                       /tmp/cc9Dtwua.lto.o
+                                                  /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_12                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_13                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_14                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_15                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_16                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_17                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_18                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_19                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_2                                        /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_20                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_21                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_22                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_23                                       /tmp/cc8DoIZb.lto.o
                                                   fast-usbserial.o (symbol from plugin)
-                                                  /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_24                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_25                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_26                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_27                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_28                                       /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_3                                        /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_4                                        /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_5                                        /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_6                                        /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_7                                        /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_8                                        /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_9                                        /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vector_default                                  /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-__vectors                                         /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-_exit                                             /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
-exit                                              /usr/lib/gcc/avr/4.9.2/avr35/libgcc.a(_exit.o)
-                                                  /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
-main                                              /tmp/cc9Dtwua.lto.o
+                                                  /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_24                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_25                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_26                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_27                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_28                                       /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_3                                        /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_4                                        /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_5                                        /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_6                                        /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_7                                        /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_8                                        /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_9                                        /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vector_default                                  /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+__vectors                                         /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+_exit                                             /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
+eeprom_read_byte                                  /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a(eerd_byte.o)
+                                                  USB-Drivers/Endpoint.o (symbol from plugin)
+eeprom_update_byte                                /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a(eeupd_byte.o)
+                                                  USB-Drivers/Endpoint.o (symbol from plugin)
+eeprom_update_r18                                 /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/libatmega16u2.a(eeupd_byte.o)
+exit                                              /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/avr35/libgcc.a(_exit.o)
+                                                  /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o
+main                                              /tmp/cc8DoIZb.lto.o
                                                   fast-usbserial.o (symbol from plugin)
-                                                  /usr/lib/gcc/avr/4.9.2/../../../../avr/lib/avr35/crtm16u2.o
+                                                  /home/urjaman/avrtc-test/lib/gcc/avr/5.1.1/../../../../avr/lib/avr35/crtatmega16u2.o

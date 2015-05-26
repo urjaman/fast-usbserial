@@ -574,6 +574,7 @@
 				uint8_t Dummy;
 				
 				Dummy = UEDATX;
+				(void)Dummy;
 			}
 			
 			/** Reads two bytes from the currently selected endpoint's bank in little endian format, for OUT
@@ -659,6 +660,7 @@
 				
 				Dummy = UEDATX;
 				Dummy = UEDATX;
+				(void)Dummy;
 			}
 
 			/** Reads four bytes from the currently selected endpoint's bank in little endian format, for OUT
@@ -754,6 +756,7 @@
 				Dummy = UEDATX;
 				Dummy = UEDATX;
 				Dummy = UEDATX;
+				(void)Dummy;
 			}
 
 		/* External Variables: */
@@ -1246,7 +1249,7 @@
 			 */
 			uint8_t Endpoint_Read_Control_Stream_BE(void* Buffer,
 			                                        uint16_t Length) ATTR_NON_NULL_PTR_ARG(1);
-			
+
 			/** EEPROM buffer source version of \ref Endpoint_Read_Control_Stream_BE().
 			 *
 			 *  \note This function automatically clears the control transfer's status stage. Do not manually attempt
@@ -1278,7 +1281,7 @@
 			#define _ENDPOINT_GET_DOUBLEBANK(n)            _ENDPOINT_GET_DOUBLEBANK2(ENDPOINT_DETAILS_EP ## n)
 			#define _ENDPOINT_GET_DOUBLEBANK2(details)     _ENDPOINT_GET_DOUBLEBANK3(details)
 			#define _ENDPOINT_GET_DOUBLEBANK3(maxsize, db) db
-			
+
 			#if defined(USB_SERIES_4_AVR) || defined(USB_SERIES_6_AVR) || defined(USB_SERIES_7_AVR)
 				#define ENDPOINT_DETAILS_EP0               64,  true
 				#define ENDPOINT_DETAILS_EP1               256, true
@@ -1292,7 +1295,7 @@
 				#define ENDPOINT_DETAILS_EP1               64,  false
 				#define ENDPOINT_DETAILS_EP2               64,  false
 				#define ENDPOINT_DETAILS_EP3               64,  true
-				#define ENDPOINT_DETAILS_EP4               64,  true			
+				#define ENDPOINT_DETAILS_EP4               64,  true
 			#endif
 
 			#define Endpoint_ConfigureEndpoint(Number, Type, Direction, Size, Banks)                           \
@@ -1310,7 +1313,7 @@
 			uint8_t Endpoint_BytesToEPSizeMaskDynamic(const uint16_t Size);
 			bool    Endpoint_ConfigureEndpoint_Prv(const uint8_t Number,
 			                                       const uint8_t UECFG0XData,
-			                                       const uint8_t UECFG1XData);			
+			                                       const uint8_t UECFG1XData);
 
 		/* Inline Functions: */
 			static inline uint8_t Endpoint_BytesToEPSizeMask(const uint16_t Bytes) ATTR_WARN_UNUSED_RESULT ATTR_CONST ATTR_ALWAYS_INLINE;
@@ -1318,16 +1321,16 @@
 			{
 				uint8_t  MaskVal    = 0;
 				uint16_t CheckBytes = 8;
-				
+
 				while (CheckBytes < Bytes)
 				{
 					MaskVal++;
 					CheckBytes <<= 1;
 				}
-				
+
 				return (MaskVal << EPSIZE0);
 			}
-			
+
 			static inline bool Endpoint_ConfigureEndpointStatic(const uint8_t Number,
 			                                                    const uint8_t Type,
 			                                                    const uint8_t Direction,
