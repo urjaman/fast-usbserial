@@ -51,10 +51,10 @@
 		#define CDC_NOTIFICATION_EPNUM         2
 
 		/** Endpoint number of the CDC device-to-host data IN endpoint. */
-		#define CDC_TX_EPNUM                   3	
+		#define CDC_TX_EPNUM                   3
 
 		/** Endpoint number of the CDC host-to-device data OUT endpoint. */
-		#define CDC_RX_EPNUM                   4	
+		#define CDC_RX_EPNUM                   4
 
 		/** Size in bytes of the CDC device-to-host notification IN endpoint. */
 		#define CDC_NOTIFICATION_EPSIZE        8

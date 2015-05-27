@@ -1,7 +1,7 @@
 /*
              LUFA Library
      Copyright (C) Dean Camera, 2010.
-              
+
   dean [at] fourwalledcubicle [dot] com
       www.fourwalledcubicle.com
 */
@@ -9,13 +9,13 @@
 /*
   Copyright 2010  Dean Camera (dean [at] fourwalledcubicle [dot] com)
 
-  Permission to use, copy, modify, distribute, and sell this 
+  Permission to use, copy, modify, distribute, and sell this
   software and its documentation for any purpose is hereby granted
-  without fee, provided that the above copyright notice appear in 
+  without fee, provided that the above copyright notice appear in
   all copies and that both that the copyright notice and this
-  permission notice and warranty disclaimer appear in supporting 
-  documentation, and that the name of the author not be used in 
-  advertising or publicity pertaining to distribution of the 
+  permission notice and warranty disclaimer appear in supporting
+  documentation, and that the name of the author not be used in
+  advertising or publicity pertaining to distribution of the
   software without specific, written prior permission.
 
   The author disclaim all warranties with regard to this
@@ -49,7 +49,7 @@ bool Pipe_ConfigurePipe(const uint8_t Number,
 	Pipe_EnablePipe();
 
 	UPCFG1X = 0;
-	
+
 	UPCFG0X = ((Type << EPTYPE0) | Token | ((EndpointNumber & PIPE_EPNUM_MASK) << PEPNUM0));
 	UPCFG1X = ((1 << ALLOC) | Banks | Pipe_BytesToEPSizeMask(Size));
 
@@ -79,20 +79,20 @@ bool Pipe_IsEndpointBound(const uint8_t EndpointAddress)
 	for (uint8_t PNum = 0; PNum < PIPE_TOTAL_PIPES; PNum++)
 	{
 		Pipe_SelectPipe(PNum);
-		
+
 		if (!(Pipe_IsConfigured()))
 		  continue;
-		
+
 		uint8_t PipeToken        = Pipe_GetPipeToken();
 		bool    PipeTokenCorrect = true;
 
 		if (PipeToken != PIPE_TOKEN_SETUP)
 		  PipeTokenCorrect = (PipeToken == ((EndpointAddress & PIPE_EPDIR_MASK) ? PIPE_TOKEN_IN : PIPE_TOKEN_OUT));
-		
+
 		if (PipeTokenCorrect && (Pipe_BoundEndpointNumber() == (EndpointAddress & PIPE_EPNUM_MASK)))
 		  return true;
 	}
-	
+
 	Pipe_SelectPipe(PrevPipeNumber);
 	return false;
 }
@@ -100,11 +100,11 @@ bool Pipe_IsEndpointBound(const uint8_t EndpointAddress)
 uint8_t Pipe_WaitUntilReady(void)
 {
 	#if (USB_STREAM_TIMEOUT_MS < 0xFF)
-	uint8_t  TimeoutMSRem = USB_STREAM_TIMEOUT_MS;	
+	uint8_t  TimeoutMSRem = USB_STREAM_TIMEOUT_MS;
 	#else
 	uint16_t TimeoutMSRem = USB_STREAM_TIMEOUT_MS;
 	#endif
-	
+
 	for (;;)
 	{
 		if (Pipe_GetPipeToken() == PIPE_TOKEN_IN)
@@ -115,14 +115,14 @@ uint8_t Pipe_WaitUntilReady(void)
 		else
 		{
 			if (Pipe_IsOUTReady())
-			  return PIPE_READYWAIT_NoError;		
+			  return PIPE_READYWAIT_NoError;
 		}
 
 		if (Pipe_IsStalled())
 		  return PIPE_READYWAIT_PipeStalled;
 		else if (USB_HostState == HOST_STATE_Unattached)
 		  return PIPE_READYWAIT_DeviceDisconnected;
-			  
+
 		if (USB_INT_HasOccurred(USB_INT_HSOFI))
 		{
 			USB_INT_Clear(USB_INT_HSOFI);
@@ -140,7 +140,7 @@ uint8_t Pipe_Discard_Stream(uint16_t Length
                             )
 {
 	uint8_t  ErrorCode;
-	
+
 	Pipe_SetPipeToken(PIPE_TOKEN_IN);
 
 	if ((ErrorCode = Pipe_WaitUntilReady()))
@@ -161,7 +161,7 @@ uint8_t Pipe_Discard_Stream(uint16_t Length
 					if (!(Pipe_IsReadWriteAllowed()))
 					{
 						Pipe_ClearIN();
-							
+
 						#if !defined(NO_STREAM_CALLBACKS)
 						if ((Callback != NULL) && (Callback() == STREAMCALLBACK_Abort))
 						  return PIPE_RWSTREAM_CallbackAborted;

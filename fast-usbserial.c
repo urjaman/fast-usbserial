@@ -50,7 +50,7 @@ static uint8_t USBtoUSART_buf[USB2USART_BUFLEN];
 /* NOTE: Reserved 0x100 bytes from start of RAM for this via linker magic. */
 #define USART2USB_BUFADDR 0x100
 
-static uint8_t USARTtoUSB_wrp = 0;
+static uint8_t USARTtoUSB_wrp __attribute__((used)) = 0;
 static uint8_t USARTtoUSB_rdp = 0;
 //static uint8_t USARTtoUSB_buf[USART2USB_BUFLEN];
 static volatile uint8_t USARTtoUSB_cnt = 0;
@@ -109,12 +109,24 @@ int main(void)
 			uint8_t txcnt = CDC_IN_EPSIZE - Endpoint_BytesInEndpoint();
 			if (txcnt > cnt) txcnt = cnt;
 			if (cnt > txcnt) cnt = txcnt;
-			uint16_t tmp = USART2USB_BUFADDR;
-			tmp |= USARTtoUSB_rdp;
+			uint16_t tmp;
+			asm (
+			"lds %A0, %1\n\t"
+			"ldi %B0, 0x01\n\t" ///USART2USB_BUFADDR;
+			: "=z" (tmp)
+			: "m" (USARTtoUSB_rdp)
+			);
 			do {
-				uint8_t d = *((uint8_t*)tmp);
+				uint8_t d;
+				asm (
+				"ld %0, %a1+\n\t"
+				"ldi %B1, 0x01\n\t"
+				: "=&r" (d), "=z" (tmp)
+				: "1" (tmp)
+				);
+//				uint8_t d = *((uint8_t*)tmp);
                                 Endpoint_Write_Byte(d);
-                                tmp = (USART2USB_BUFADDR & 0xFF00) | ((tmp+1)&0xFF);
+//                                tmp = (USART2USB_BUFADDR & 0xFF00) | ((tmp+1)&0xFF);
 			} while (--txcnt);
 	                Endpoint_ClearIN();
 			USARTtoUSB_rdp = tmp & 0xFF;
@@ -261,18 +273,67 @@ void EVENT_CDC_Device_LineEncodingChanged(USB_ClassInfo_CDC_Device_t* const CDCI
 /** ISR to manage the reception of data from the serial port, placing received bytes into a circular buffer
  *  for later transmission to the host.
  */
+#if 0
 ISR(USART1_RX_vect, ISR_BLOCK)
 {
 	uint8_t d = UDR1;
-	if (USB_DeviceState != DEVICE_STATE_Configured) return;
-	uint16_t tmp = USART2USB_BUFADDR;
-	tmp |= USARTtoUSB_wrp;
+	asm volatile (
+	"in r30, %0\n\t"
+	"cpi r30, %1\n\t"
+	"brne 100f\n\t"
+	:: "M" (_SFR_IO_ADDR(USB_DeviceState)), "M" (DEVICE_STATE_Configured)
+	: "r30"
+	);
+//	if (USB_DeviceState != DEVICE_STATE_Configured) return;
+	uint16_t tmp;
+	asm (
+	"lds %A0, %1\n\t"
+	"ldi %B0, 0x01\n\t" ///USART2USB_BUFADDR
+	: "=e" (tmp)
+	: "m" (USARTtoUSB_wrp)
+	);
 	*((uint8_t*)tmp) = d;
 	tmp++;
 	USARTtoUSB_wrp = tmp & 0xFF;
 	USARTtoUSB_cnt++;
 	TCNT0 = 0;
+	asm volatile ("100:\n\t");
 }
+#else
+ISR(USART1_RX_vect, ISR_NAKED)
+{
+	asm volatile (
+	"push r1\n\t"
+	"in r1, %3\n\t" // SREG
+	"push r24\n\t"
+	"lds r24, %2\n\t" // UDR1
+	// if (USB_DeviceState != DEVICE_STATE_Configured) return;
+	"push r30\n\t"
+	"in r30, %0\n\t" // DeviceState
+	"cpi r30, %1\n\t" // DEVICE_STATE_Configured
+	"brne 100f\n\t"
+	"push r31\n\t"
+	"lds r30, %4\n\t" // USARTtoUSB_wrp
+	"ldi r31, 0x01\n\t"
+	"st Z+, r24\n\t"
+	"sts %4, r30\n\t"
+	"lds r24, %5\n\t" // USARTtoUSB_cnt
+	"inc r24\n\t"
+	"sts %5, r24\n\t" // ++
+	"ldi r24, 0\n\t"
+	"out %6, r24\n\t" // TCNT0 = 0
+	"pop r31\n\t"
+	"100:\n\t"
+	"pop r30\n\t"
+	"pop r24\n\t"
+	"out %3, r1\n\t"
+	"pop r1\n\t"
+	"reti\n\t"
+	:: "I" (_SFR_IO_ADDR(USB_DeviceState)), "M" (DEVICE_STATE_Configured), "m" (UDR1), "I" (_SFR_IO_ADDR(SREG)),
+	   "m" (USARTtoUSB_wrp), "m" (USARTtoUSB_cnt), "I" (_SFR_IO_ADDR(TCNT0))
+	);
+}
+#endif
 
 /** Event handler for the CDC Class driver Host-to-Device Line Encoding Changed event.
  *

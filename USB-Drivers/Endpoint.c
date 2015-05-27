@@ -93,7 +93,6 @@ void Endpoint_ClearStatusStage(void)
 			if (USB_DeviceState == DEVICE_STATE_Unattached)
 			  return;
 		}
-		
 		Endpoint_ClearIN();
 	}
 }
@@ -119,14 +118,14 @@ uint8_t Endpoint_WaitUntilReady(void)
 			if (Endpoint_IsOUTReceived())
 			  return ENDPOINT_READYWAIT_NoError;
 		}
-		
+
 		if (USB_DeviceState == DEVICE_STATE_Unattached)
 		  return ENDPOINT_READYWAIT_DeviceDisconnected;
 		else if (USB_DeviceState == DEVICE_STATE_Suspended)
 		  return ENDPOINT_READYWAIT_BusSuspended;
 		else if (Endpoint_IsStalled())
 		  return ENDPOINT_READYWAIT_EndpointStalled;
-			  
+
 		if (USB_INT_HasOccurred(USB_INT_SOFI))
 		{
 			USB_INT_Clear(USB_INT_SOFI);
@@ -144,7 +143,7 @@ uint8_t Endpoint_Discard_Stream(uint16_t Length
                                 )
 {
 	uint8_t  ErrorCode;
-	
+
 	if ((ErrorCode = Endpoint_WaitUntilReady()))
 	  return ErrorCode;
 
@@ -174,7 +173,7 @@ uint8_t Endpoint_Discard_Stream(uint16_t Length
 					}
 
 					Length -= 8;
-					
+
 					Endpoint_Discard_Byte();
 			case 7: Endpoint_Discard_Byte();
 			case 6: Endpoint_Discard_Byte();
@@ -208,7 +207,7 @@ uint8_t Endpoint_Discard_Stream(uint16_t Length
 			Length--;
 		}
 	}
-	
+
 	return ENDPOINT_RWSTREAM_NoError;
 }
 

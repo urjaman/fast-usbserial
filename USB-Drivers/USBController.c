@@ -49,7 +49,7 @@ void USB_Init(
                #elif (!defined(USB_CAN_BE_BOTH) && defined(USE_STATIC_OPTIONS))
                void
                #endif
-			   
+
                #if !defined(USE_STATIC_OPTIONS)
                const uint8_t Options
                #endif
@@ -66,7 +66,7 @@ void USB_Init(
 	#if defined(USB_CAN_BE_HOST)
 	USB_ControlPipeSize = PIPE_CONTROLPIPE_DEFAULT_SIZE;
 	#endif
-	
+
 	#if defined(USB_DEVICE_ONLY) && (defined(USB_SERIES_6_AVR) || defined(USB_SERIES_7_AVR))
 	UHWCON |= (1 << UIMOD);
 	#elif defined(USB_HOST_ONLY)
@@ -78,14 +78,14 @@ void USB_Init(
 
 		USB_INT_Clear(USB_INT_IDTI);
 		USB_INT_Enable(USB_INT_IDTI);
-		
+
 		USB_CurrentMode = USB_GetUSBModeFromUID();
 	}
 	else if (Mode == USB_MODE_DEVICE)
 	{
 		UHWCON |=  (1 << UIMOD);
 	}
-	else if (Mode == USB_MODE_HOST)			
+	else if (Mode == USB_MODE_HOST)	
 	{
 		UHWCON &= ~(1 << UIMOD);
 	}
@@ -95,7 +95,7 @@ void USB_Init(
 		return;
 	}
 	#endif
-	
+
 	USB_ResetInterface();
 
 	#if defined(USB_SERIES_4_AVR) || defined(USB_SERIES_6_AVR) || defined(USB_SERIES_7_AVR)
@@ -110,17 +110,17 @@ void USB_ShutDown(void)
 	USB_ResetInterface();
 	USB_Detach();
 	USB_Controller_Disable();
-	
+
 	USB_INT_DisableAllInterrupts();
 	USB_INT_ClearAllInterrupts();
 
 	#if defined(USB_SERIES_6_AVR) || defined(USB_SERIES_7_AVR)
 	UHWCON &= ~(1 << UIMOD);
 	#endif
-	
+
 	if (!(USB_Options & USB_OPT_MANUAL_PLL))
 	  USB_PLL_Off();
-	
+
 	USB_REG_Off();
 
 	#if defined(USB_SERIES_4_AVR) || defined(USB_SERIES_6_AVR) || defined(USB_SERIES_7_AVR)
