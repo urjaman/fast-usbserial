@@ -60,7 +60,7 @@
 		#define CDC_NOTIFICATION_EPSIZE        8
 
 		/** Size in bytes of the CDC data IN and OUT endpoints. */
-		#define CDC_OUT_EPSIZE                24
+		#define CDC_OUT_EPSIZE                32
 		#define CDC_IN_EPSIZE                64
 
 	/* Type Defines: */
