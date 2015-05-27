@@ -1,5 +1,9 @@
+NOTE: This is a modified version of arduino-usbserial, and
+was only tested on the ATmega16U2, and the below
+readme is obsolete. On my 16U2 it is hit the 16U2 reset
+with pliers and sudo make dfu :P
+
 To setup the project and upload the Arduino usbserial application firmware to an ATMEGA8U2 using the Arduino USB DFU bootloader:
-1. unpack the source into LUFA's Projects directory
 2. set ARDUINO_MODEL_PID in the makefile as appropriate
 3. do "make clean; make"
 4. put the 8U2 into USB DFU mode:

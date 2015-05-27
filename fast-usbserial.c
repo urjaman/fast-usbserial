@@ -1,3 +1,8 @@
+/* Based on arduino-usbserial and LUFA. but made
+ * into a stand-alone LUFA subset and heavily modified
+ * by Urja Rannikko 2015. My modifications are under the LUFA
+ * License below. */
+
 /*
              LUFA Library
      Copyright (C) Dean Camera, 2010.
@@ -30,14 +35,13 @@
 
 /** \file
  *
- *  Main source file for the Arduino-usbserial project. This file contains the main tasks of
+ *  Main source file for the fast-usbserial project. This file contains the main tasks of
  *  the project and is responsible for the initial application hardware configuration.
  */
 
 #include "fast-usbserial.h"
 
-/* The original ring buffer code is unserviceable IMO .*/
-
+/* Needs to be power-of-2 */
 #define USB2USART_BUFLEN 64
 static uint8_t USBtoUSART_wrp = 0;
 static uint8_t USBtoUSART_rdp = 0;
@@ -46,12 +50,13 @@ static uint8_t USBtoUSART_buf[USB2USART_BUFLEN];
 
 #define USART2USB_BUFLEN 256
 #define USART2USB_NEAR_FULL CDC_IN_EPSIZE
-
-/* NOTE: Reserved 0x100 bytes from start of RAM for this via linker magic. */
-#define USART2USB_BUFADDR 0x100
-
 static uint8_t USARTtoUSB_wrp __attribute__((used)) = 0;
 static uint8_t USARTtoUSB_rdp = 0;
+/* NOTE: Reserved 256 bytes from start of RAM at 0x100 for this via linker magic,
+ * so we can use 256-byte aligned addresssing. */
+/* But since everybody just knows this (ldi high 0x01) i commented this out. */
+//#define USART2USB_BUFADDR 0x100
+
 //static uint8_t USARTtoUSB_buf[USART2USB_BUFLEN];
 static volatile uint8_t USARTtoUSB_cnt = 0;
 
@@ -105,30 +110,29 @@ int main(void)
 		/* Check if the UART receive buffer flush timer has expired or the buffer is nearly full */
 		if ( ((cnt >= USART2USB_NEAR_FULL) || (timer_ovrflw && cnt)) &&
 			(CDC_Device_SendByte_Prep(&VirtualSerial_CDC_Interface) == 0) ) {
-
-			uint8_t txcnt = CDC_IN_EPSIZE - Endpoint_BytesInEndpoint();
+			/* Endpoint will always be empty since we're the only writer
+			 * and we flush after every write. */
+			uint8_t txcnt = CDC_IN_EPSIZE;
 			if (txcnt > cnt) txcnt = cnt;
-			if (cnt > txcnt) cnt = txcnt;
+			cnt = txcnt; /* Save real amount of TX. */
 			uint16_t tmp;
 			asm (
+			/* Do not initialize high byte, it will be done on first loop. */
 			"lds %A0, %1\n\t"
-			"ldi %B0, 0x01\n\t" ///USART2USB_BUFADDR;
 			: "=z" (tmp)
 			: "m" (USARTtoUSB_rdp)
 			);
 			do {
 				uint8_t d;
 				asm (
+				"ldi %B1, 0x01\n\t" /* Force high byte */
 				"ld %0, %a1+\n\t"
-				"ldi %B1, 0x01\n\t"
 				: "=&r" (d), "=z" (tmp)
 				: "1" (tmp)
 				);
-//				uint8_t d = *((uint8_t*)tmp);
                                 Endpoint_Write_Byte(d);
-//                                tmp = (USART2USB_BUFADDR & 0xFF00) | ((tmp+1)&0xFF);
 			} while (--txcnt);
-	                Endpoint_ClearIN();
+	                Endpoint_ClearIN(); /* Go data, GO. */
 			USARTtoUSB_rdp = tmp & 0xFF;
 			cli();
 			/* This will be logically OK, even if more bytes arrived during TX,
@@ -138,15 +142,14 @@ int main(void)
 			LEDs_TurnOnLEDs(LEDMASK_TX);
 			PulseMSRemaining.TxLEDPulse = TX_RX_LED_PULSE_MS;
 
-#if 1
 			/* This prevents TX from forgetting to turn off RX led. */
 			/* The RX led period will be saddened though */
 			if (PulseMSRemaining.RxLEDPulse && !(--PulseMSRemaining.RxLEDPulse))
 			  LEDs_TurnOffLEDs(LEDMASK_RX);
-#endif
 		} else {
 			/* My guess is that this branch will be run regularly, even during full output, because
 			   USB hosts are poor at servicing devices... thus moved the control IF service here too. */
+
 			/* Only try to read in bytes from the CDC interface if the transmit buffer is not full */
 			if (USBtoUSART_cnt < (USB2USART_BUFLEN-1)) {
 				int16_t ReceivedByte = CDC_Device_ReceiveByte(&VirtualSerial_CDC_Interface);
@@ -161,7 +164,7 @@ int main(void)
 				  USBtoUSART_cnt++;
 				}
 			}
-			/* Make This less important than the above thing. */
+
 			if (USBtoUSART_cnt) {
 				if (UCSR1A & (1 << UDRE1)) {
 					uint8_t rdp = USBtoUSART_rdp;
@@ -183,8 +186,7 @@ int main(void)
 			}
 			USB_USBTask();
 		}
-		/* That CDC_Device_USBTask would call CDC_Device_Flush even if the bank was already full... */
-		/* Which would cause waiting. */
+		/* CDC_Device_USBTask would only flush TX which we already do. */
 		//CDC_Device_USBTask(&VirtualSerial_CDC_Interface);
 	}
 }
@@ -270,36 +272,6 @@ void EVENT_CDC_Device_LineEncodingChanged(USB_ClassInfo_CDC_Device_t* const CDCI
 	UCSR1B = ((1 << RXCIE1) | (1 << TXEN1) | (1 << RXEN1));
 }
 
-/** ISR to manage the reception of data from the serial port, placing received bytes into a circular buffer
- *  for later transmission to the host.
- */
-#if 0
-ISR(USART1_RX_vect, ISR_BLOCK)
-{
-	uint8_t d = UDR1;
-	asm volatile (
-	"in r30, %0\n\t"
-	"cpi r30, %1\n\t"
-	"brne 100f\n\t"
-	:: "M" (_SFR_IO_ADDR(USB_DeviceState)), "M" (DEVICE_STATE_Configured)
-	: "r30"
-	);
-//	if (USB_DeviceState != DEVICE_STATE_Configured) return;
-	uint16_t tmp;
-	asm (
-	"lds %A0, %1\n\t"
-	"ldi %B0, 0x01\n\t" ///USART2USB_BUFADDR
-	: "=e" (tmp)
-	: "m" (USARTtoUSB_wrp)
-	);
-	*((uint8_t*)tmp) = d;
-	tmp++;
-	USARTtoUSB_wrp = tmp & 0xFF;
-	USARTtoUSB_cnt++;
-	TCNT0 = 0;
-	asm volatile ("100:\n\t");
-}
-#else
 ISR(USART1_RX_vect, ISR_NAKED)
 {
 	asm volatile (
@@ -333,7 +305,6 @@ ISR(USART1_RX_vect, ISR_NAKED)
 	   "m" (USARTtoUSB_wrp), "m" (USARTtoUSB_cnt), "I" (_SFR_IO_ADDR(TCNT0))
 	);
 }
-#endif
 
 /** Event handler for the CDC Class driver Host-to-Device Line Encoding Changed event.
  *
