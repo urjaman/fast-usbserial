@@ -228,8 +228,6 @@
 			uint8_t CDC_Device_SendByte(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo,
 			                            const uint8_t Data) ATTR_NON_NULL_PTR_ARG(1);
 
-			uint8_t CDC_Device_SendByte_Fast(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo,
-                            const uint8_t Data);
 
 			/* This about writing data to endpoint. User will take care of the writing if needed. */
 			uint8_t CDC_Device_SendByte_Prep(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo);

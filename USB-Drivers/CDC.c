@@ -143,7 +143,7 @@ uint8_t CDC_Device_SendString(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo
 	return Endpoint_Write_Stream_LE(Data, Length, NO_STREAM_CALLBACK);
 }
 
-/* This about writing data to endpoint. User will take care of the writing if needed. */
+/* Think about writing data to endpoint. User will take care of the writing if needed. */
 uint8_t CDC_Device_SendByte_Prep(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo)
 {
 	if ((USB_DeviceState != DEVICE_STATE_Configured) || !(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS))
@@ -156,25 +156,6 @@ uint8_t CDC_Device_SendByte_Prep(USB_ClassInfo_CDC_Device_t* const CDCInterfaceI
 		Endpoint_ClearIN();
 		return ENDPOINT_READYWAIT_Timeout;
 	}
-	return ENDPOINT_READYWAIT_NoError;
-}
-
-/* Fail Fast version, no waiting. */
-uint8_t CDC_Device_SendByte_Fast(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo,
-                            const uint8_t Data)
-{
-	if ((USB_DeviceState != DEVICE_STATE_Configured) || !(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS))
-	  return ENDPOINT_RWSTREAM_DeviceDisconnected;
-
-	Endpoint_SelectEndpoint(CDCInterfaceInfo->Config.DataINEndpointNumber);
-
-	if (!(Endpoint_IsReadWriteAllowed()))
-	{
-		Endpoint_ClearIN();
-		return ENDPOINT_READYWAIT_Timeout;
-	}
-
-	Endpoint_Write_Byte(Data);
 	return ENDPOINT_READYWAIT_NoError;
 }
 
