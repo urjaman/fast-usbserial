@@ -144,7 +144,6 @@ SRC = $(TARGET).c                                                 \
 	  Descriptors.c                                               \
           USB-Drivers/Device.c             \
           USB-Drivers/Endpoint.c           \
-          USB-Drivers/Pipe.c               \
           USB-Drivers/USBController.c      \
           USB-Drivers/USBInterrupt.c       \
           USB-Drivers/ConfigDescriptor.c  \
