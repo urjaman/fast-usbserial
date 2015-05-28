@@ -43,15 +43,13 @@
 
 /* Needs to be power-of-2 */
 #define USB2USART_BUFLEN 64
-static uint8_t USBtoUSART_wrp = 0;
-static uint8_t USBtoUSART_rdp = 0;
 static uint8_t USBtoUSART_buf[USB2USART_BUFLEN];
 
 
 #define USART2USB_BUFLEN 256
 #define USART2USB_NEAR_FULL CDC_IN_EPSIZE
 static uint8_t USARTtoUSB_wrp __attribute__((used)) = 0;
-static uint8_t USARTtoUSB_rdp = 0;
+
 /* NOTE: Reserved 256 bytes from start of RAM at 0x100 for this via linker magic,
  * so we can use 256-byte aligned addresssing. */
 /* But since everybody just knows this (ldi high 0x01) i commented this out. */
@@ -96,98 +94,122 @@ USB_ClassInfo_CDC_Device_t VirtualSerial_CDC_Interface =
  */
 int main(void)
 {
-	uint8_t USBtoUSART_cnt = 0;
 	SetupHardware();
-
 	sei();
-
-	for (;;)
-	{
-		uint8_t timer_ovrflw = TIFR0 & _BV(TOV0);
-		if (timer_ovrflw) TIFR0 = _BV(TOV0);
-		/* I'd like to get rid of these counters... */
-		uint8_t cnt = USARTtoUSB_cnt;
-		/* Check if the UART receive buffer flush timer has expired or the buffer is nearly full */
-		if ( ((cnt >= USART2USB_NEAR_FULL) || (timer_ovrflw && cnt)) &&
-			(CDC_Device_SendByte_Prep(&VirtualSerial_CDC_Interface) == 0) ) {
-			/* Endpoint will always be empty since we're the only writer
-			 * and we flush after every write. */
-			uint8_t txcnt = CDC_IN_EPSIZE;
-			if (txcnt > cnt) txcnt = cnt;
-			cnt = txcnt; /* Save real amount of TX. */
-			uint16_t tmp;
-			asm (
-			/* Do not initialize high byte, it will be done on first loop. */
-			"lds %A0, %1\n\t"
-			: "=z" (tmp)
-			: "m" (USARTtoUSB_rdp)
-			);
-			do {
-				uint8_t d;
+	for (;;) {
+		/* Let the compiler decide where these are. */
+		uint8_t USBtoUSART_wrp = 0;
+		uint8_t USBtoUSART_rdp = 0;
+		uint8_t USBtoUSART_cnt = 0;
+		uint8_t USARTtoUSB_rdp = 0;
+		uint8_t last_cnt = 0;
+		cli();
+		UCSR1B &= ~_BV(RXCIE1);
+		USARTtoUSB_cnt = 0;
+		USARTtoUSB_wrp = 0;
+		sei();
+		do {
+			USB_USBTask();
+			TCNT0 = 0;
+		} while (USB_DeviceState != DEVICE_STATE_Configured);
+		UCSR1B |= _BV(RXCIE1);
+		while(1) {
+		// While USB_DeviceState == DEVICE_STATE_Configured, but proper exit point
+			uint8_t timer_ovrflw = TIFR0 & _BV(TOV0);
+			if (timer_ovrflw) TIFR0 = _BV(TOV0);
+			/* I'd like to get rid of these counters... */
+			uint8_t cnt = USARTtoUSB_cnt;
+			/* Check if the UART receive buffer flush timer has expired or the buffer is nearly full */
+			if ( ((cnt >= USART2USB_NEAR_FULL) || (timer_ovrflw && cnt)) &&
+				(CDC_Device_SendByte_Prep(&VirtualSerial_CDC_Interface) == 0) ) {
+				/* Endpoint will always be empty since we're the only writer
+				 * and we flush after every write. */
+				uint8_t txcnt = CDC_IN_EPSIZE;
+				if (txcnt > cnt) txcnt = cnt;
+				cnt = txcnt; /* Save real amount of TX. */
+				uint16_t tmp;
 				asm (
-				"ldi %B1, 0x01\n\t" /* Force high byte */
-				"ld %0, %a1+\n\t"
-				: "=&r" (d), "=z" (tmp)
-				: "1" (tmp)
+				/* Do not initialize high byte, it will be done on first loop. */
+				"mov %A0, %1\n\t"
+				: "=&z" (tmp)
+				: "r" (USARTtoUSB_rdp)
 				);
-                                Endpoint_Write_Byte(d);
-			} while (--txcnt);
-	                Endpoint_ClearIN(); /* Go data, GO. */
-			USARTtoUSB_rdp = tmp & 0xFF;
-			cli();
-			/* This will be logically OK, even if more bytes arrived during TX,
-			 * because we sent cnt bytes, so removed that much from the buffer. */
-			USARTtoUSB_cnt -= cnt;
-			sei();
-			LEDs_TurnOnLEDs(LEDMASK_TX);
-			PulseMSRemaining.TxLEDPulse = TX_RX_LED_PULSE_MS;
-
-			/* This prevents TX from forgetting to turn off RX led. */
-			/* The RX led period will be saddened though */
-			if (PulseMSRemaining.RxLEDPulse && !(--PulseMSRemaining.RxLEDPulse))
-			  LEDs_TurnOffLEDs(LEDMASK_RX);
-		} else {
-			/* My guess is that this branch will be run regularly, even during full output, because
-			   USB hosts are poor at servicing devices... thus moved the control IF service here too. */
-
-			/* Only try to read in bytes from the CDC interface if the transmit buffer is not full */
-			if (USBtoUSART_cnt < (USB2USART_BUFLEN-1)) {
-				int16_t ReceivedByte = CDC_Device_ReceiveByte(&VirtualSerial_CDC_Interface);
-
-				/* Read byte from the USB OUT endpoint into the USART transmit buffer */
-				if (!(ReceivedByte < 0)) {
-				  uint8_t wrp = USBtoUSART_wrp;
-				  USBtoUSART_buf[wrp] = ReceivedByte;
-				  wrp++;
-				  wrp &= (USB2USART_BUFLEN-1);
-				  USBtoUSART_wrp = wrp;
-				  USBtoUSART_cnt++;
-				}
-			}
-
-			if (USBtoUSART_cnt) {
-				if (UCSR1A & (1 << UDRE1)) {
-					uint8_t rdp = USBtoUSART_rdp;
-					UDR1 = USBtoUSART_buf[rdp];
-					rdp++;
-					rdp &= (USB2USART_BUFLEN-1);
-					USBtoUSART_rdp = rdp;
-					USBtoUSART_cnt--;
-				  	LEDs_TurnOnLEDs(LEDMASK_RX);
-					PulseMSRemaining.RxLEDPulse = TX_RX_LED_PULSE_MS;
-				}
-			}
-			if (timer_ovrflw) {
-				/* Turn off TX LED(s) once the TX pulse period has elapsed */
-				if (PulseMSRemaining.TxLEDPulse && !(--PulseMSRemaining.TxLEDPulse))
-				  LEDs_TurnOffLEDs(LEDMASK_TX);
+				do {
+					uint8_t d;
+					asm (
+					"ldi %B1, 0x01\n\t" /* Force high byte */
+					"ld %0, %a1+\n\t"
+					: "=&r" (d), "=z" (tmp)
+					: "1" (tmp)
+					);
+                	                Endpoint_Write_Byte(d);
+				} while (--txcnt);
+		                Endpoint_ClearIN(); /* Go data, GO. */
+				USARTtoUSB_rdp = tmp & 0xFF;
+				cli();
+				/* This will be logically OK, even if more bytes arrived during TX,
+				 * because we sent cnt bytes, so removed that much from the buffer. */
+				uint8_t l = USARTtoUSB_cnt;
+				l -= cnt;
+				last_cnt = l;
+				USARTtoUSB_cnt = l;
+				sei();
+				LEDs_TurnOnLEDs(LEDMASK_TX);
+				PulseMSRemaining.TxLEDPulse = TX_RX_LED_PULSE_MS;
+				TCNT0 = 0;
+				/* This prevents TX from forgetting to turn off RX led. */
+				/* The RX led period will be saddened though */
 				if (PulseMSRemaining.RxLEDPulse && !(--PulseMSRemaining.RxLEDPulse))
 				  LEDs_TurnOffLEDs(LEDMASK_RX);
+			} else {
+				/* My guess is that this branch will be run regularly, even during full output, because
+				   USB hosts are poor at servicing devices... thus moved the control IF service here too. */
+
+				/* Only try to read in bytes from the CDC interface if the transmit buffer is not full */
+				if (USBtoUSART_cnt < (USB2USART_BUFLEN-1)) {
+					int16_t ReceivedByte = CDC_Device_ReceiveByte(&VirtualSerial_CDC_Interface);
+
+					/* Read byte from the USB OUT endpoint into the USART transmit buffer */
+					if (!(ReceivedByte < 0)) {
+					  uint8_t wrp = USBtoUSART_wrp;
+					  USBtoUSART_buf[wrp] = ReceivedByte;
+					  wrp++;
+					  wrp &= (USB2USART_BUFLEN-1);
+					  USBtoUSART_wrp = wrp;
+					  USBtoUSART_cnt++;
+					}
+				}
+
+				if (USBtoUSART_cnt) {
+					if (UCSR1A & (1 << UDRE1)) {
+						uint8_t rdp = USBtoUSART_rdp;
+						UDR1 = USBtoUSART_buf[rdp];
+						rdp++;
+						rdp &= (USB2USART_BUFLEN-1);
+						USBtoUSART_rdp = rdp;
+						USBtoUSART_cnt--;
+					  	LEDs_TurnOnLEDs(LEDMASK_RX);
+						PulseMSRemaining.RxLEDPulse = TX_RX_LED_PULSE_MS;
+					}
+					TCNT0 = 0;
+				}
+				if (cnt > last_cnt) {
+					TCNT0 = 0;
+					last_cnt = cnt;
+				}
+				if (timer_ovrflw) {
+					/* Turn off TX LED(s) once the TX pulse period has elapsed */
+					if (PulseMSRemaining.TxLEDPulse && !(--PulseMSRemaining.TxLEDPulse))
+					  LEDs_TurnOffLEDs(LEDMASK_TX);
+					if (PulseMSRemaining.RxLEDPulse && !(--PulseMSRemaining.RxLEDPulse))
+					  LEDs_TurnOffLEDs(LEDMASK_RX);
+				}
+				USB_USBTask();
+				if(USB_DeviceState != DEVICE_STATE_Configured) break;
 			}
-			USB_USBTask();
+			/* CDC_Device_USBTask would only flush TX which we already do. */
+			//CDC_Device_USBTask(&VirtualSerial_CDC_Interface);
 		}
-		/* CDC_Device_USBTask would only flush TX which we already do. */
-		//CDC_Device_USBTask(&VirtualSerial_CDC_Interface);
 	}
 }
 
@@ -262,6 +284,9 @@ void EVENT_CDC_Device_LineEncodingChanged(USB_ClassInfo_CDC_Device_t* const CDCI
 	UCSR1A = 0;
 	UCSR1C = 0;
 
+	/* Leave it off if BaudRate == 0. */
+	if (!CDCInterfaceInfo->State.LineEncoding.BaudRateBPS) return;
+
 	/* Special case 57600 baud for compatibility with the ATmega328 bootloader. */
 	UBRR1  = (CDCInterfaceInfo->State.LineEncoding.BaudRateBPS == 57600)
 			 ? SERIAL_UBBRVAL(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS)
@@ -276,33 +301,26 @@ ISR(USART1_RX_vect, ISR_NAKED)
 {
 	asm volatile (
 	"push r1\n\t"
-	"in r1, %3\n\t" // SREG
+	"in r1, %1\n\t" // SREG
 	"push r24\n\t"
-	"lds r24, %2\n\t" // UDR1
-	// if (USB_DeviceState != DEVICE_STATE_Configured) return;
+	"lds r24, %0\n\t" // UDR1
 	"push r30\n\t"
-	"in r30, %0\n\t" // DeviceState
-	"cpi r30, %1\n\t" // DEVICE_STATE_Configured
-	"brne 100f\n\t"
 	"push r31\n\t"
-	"lds r30, %4\n\t" // USARTtoUSB_wrp
+	"lds r30, %2\n\t" // USARTtoUSB_wrp
 	"ldi r31, 0x01\n\t"
 	"st Z+, r24\n\t"
-	"sts %4, r30\n\t"
-	"lds r24, %5\n\t" // USARTtoUSB_cnt
+	"sts %2, r30\n\t"
+	"lds r24, %3\n\t" // USARTtoUSB_cnt
 	"inc r24\n\t"
-	"sts %5, r24\n\t" // ++
-	"ldi r24, 0\n\t"
-	"out %6, r24\n\t" // TCNT0 = 0
+	"sts %3, r24\n\t" // ++
 	"pop r31\n\t"
-	"100:\n\t"
 	"pop r30\n\t"
 	"pop r24\n\t"
-	"out %3, r1\n\t"
+	"out %1, r1\n\t"
 	"pop r1\n\t"
 	"reti\n\t"
-	:: "I" (_SFR_IO_ADDR(USB_DeviceState)), "M" (DEVICE_STATE_Configured), "m" (UDR1), "I" (_SFR_IO_ADDR(SREG)),
-	   "m" (USARTtoUSB_wrp), "m" (USARTtoUSB_cnt), "I" (_SFR_IO_ADDR(TCNT0))
+	:: "m" (UDR1), "I" (_SFR_IO_ADDR(SREG)),
+	   "m" (USARTtoUSB_wrp), "m" (USARTtoUSB_cnt)
 	);
 }
 

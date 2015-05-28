@@ -146,7 +146,7 @@ uint8_t CDC_Device_SendString(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo
 /* Think about writing data to endpoint. User will take care of the writing if needed. */
 uint8_t CDC_Device_SendByte_Prep(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo)
 {
-	if ((USB_DeviceState != DEVICE_STATE_Configured) || !(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS))
+	if (!(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS))
 	  return ENDPOINT_RWSTREAM_DeviceDisconnected;
 
 	Endpoint_SelectEndpoint(CDCInterfaceInfo->Config.DataINEndpointNumber);
