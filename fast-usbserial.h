@@ -48,7 +48,7 @@
 		#include "Board-LEDs.h"
 		#include "Serial.h"
 		#include "USB.h"
-		#include "CDC.h"
+		#include "SimpleCDC.h"
 		
 	/* Macros: */
 		/** LED mask for the library LED driver, to indicate TX activity. */

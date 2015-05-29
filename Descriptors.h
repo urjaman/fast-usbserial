@@ -40,7 +40,7 @@
 		#include <avr/pgmspace.h>
 
 		#include "USB.h"
-		#include "CDC.h"
+		#include "SimpleCDC.h"
 		
 	/* Product-specific definitions: */
 		#define ARDUINO_UNO_PID				0x0001
