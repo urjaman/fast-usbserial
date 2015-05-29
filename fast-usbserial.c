@@ -114,7 +114,8 @@ int main(void)
 			if (Endpoint_IsSETUPReceived())
 			  USB_Device_ProcessControlRequest();
 			TCNT0 = 0;
-		} while (USB_DeviceState != DEVICE_STATE_Configured);
+		} while ((USB_DeviceState != DEVICE_STATE_Configured)||(!VirtualSerial_CDC_Interface.State.LineEncoding.BaudRateBPS)) ;
+
 		UCSR1B |= _BV(RXCIE1);
 		while(1) {
 		// While USB_DeviceState == DEVICE_STATE_Configured, but proper exit point
@@ -208,8 +209,11 @@ int main(void)
 					  LEDs_TurnOffLEDs(LEDMASK_RX);
 				}
 				Endpoint_SelectEndpoint(ENDPOINT_CONTROLEP);
-				if (Endpoint_IsSETUPReceived())
-				  USB_Device_ProcessControlRequest();
+				if (Endpoint_IsSETUPReceived()) {
+					USB_Device_ProcessControlRequest();
+					if (!(VirtualSerial_CDC_Interface.State.LineEncoding.BaudRateBPS)) break;
+				}
+
 				if(USB_DeviceState != DEVICE_STATE_Configured) break;
 			}
 			/* CDC_Device_USBTask would only flush TX which we already do. */
