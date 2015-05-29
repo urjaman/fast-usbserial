@@ -70,26 +70,8 @@ struct
  *  within a device can be differentiated from one another.
  */
 USB_ClassInfo_CDC_Device_t VirtualSerial_CDC_Interface;
-#if 0
-	{
-		.Config =
-			{
-				.ControlInterfaceNumber         = 0,
 
-				.DataINEndpointNumber           = CDC_TX_EPNUM,
-				.DataINEndpointSize             = CDC_IN_EPSIZE,
-				.DataINEndpointDoubleBank       = true,
 
-				.DataOUTEndpointNumber          = CDC_RX_EPNUM,
-				.DataOUTEndpointSize            = CDC_OUT_EPSIZE,
-				.DataOUTEndpointDoubleBank      = false,
-
-				.NotificationEndpointNumber     = CDC_NOTIFICATION_EPNUM,
-				.NotificationEndpointSize       = CDC_NOTIFICATION_EPSIZE,
-				.NotificationEndpointDoubleBank = false,
-			},
-	};
-#endif
 /** Main program entry point. This routine contains the overall program flow, including initial
  *  setup of all components and the main program loop.
  */
@@ -196,7 +178,7 @@ int main(void)
 					}
 					TCNT0 = 0;
 				}
-				if (cnt > last_cnt) {
+				if (cnt != last_cnt) {
 					TCNT0 = 0;
 					last_cnt = cnt;
 				}
