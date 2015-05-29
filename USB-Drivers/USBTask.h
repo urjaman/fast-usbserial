@@ -76,7 +76,6 @@
 			 *
 			 *  \ingroup Group_USBManagement
 			 */
-			extern volatile bool USB_IsInitialized;
 
 			/** Structure containing the last received Control request when in Device mode (for use in user-applications
 			 *  inside of the \ref EVENT_USB_Device_UnhandledControlRequest() event, or for filling up with a control request to issue when

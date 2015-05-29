@@ -102,7 +102,6 @@ void USB_Init(
 	USB_OTGPAD_On();
 	#endif
 
-	USB_IsInitialized = true;
 }
 
 void USB_ShutDown(void)
@@ -131,7 +130,6 @@ void USB_ShutDown(void)
 	UHWCON &= ~(1 << UIDE);
 	#endif
 
-	USB_IsInitialized = false;
 
 	#if defined(USB_CAN_BE_BOTH)
 	USB_CurrentMode = USB_MODE_NONE;

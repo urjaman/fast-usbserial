@@ -32,7 +32,6 @@
 #define  __INCLUDE_FROM_USB_DRIVER
 #include "USBTask.h"
 
-volatile bool        USB_IsInitialized;
 USB_Request_Header_t USB_ControlRequest;
 
 #if defined(USB_CAN_BE_HOST) && !defined(HOST_STATE_AS_GPIOR)
