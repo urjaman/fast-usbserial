@@ -144,7 +144,7 @@ uint8_t CDC_Device_SendByte_Prep(USB_ClassInfo_CDC_Device_t* const CDCInterfaceI
 
 uint16_t CDC_Device_BytesReceived(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo)
 {
-	if ((USB_DeviceState != DEVICE_STATE_Configured) || !(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS))
+	if (!(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS))
 	  return 0;
 
 	Endpoint_SelectEndpoint(CDC_RX_EPNUM);
@@ -169,7 +169,7 @@ uint16_t CDC_Device_BytesReceived(USB_ClassInfo_CDC_Device_t* const CDCInterface
 
 int16_t CDC_Device_ReceiveByte(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo)
 {
-	if ((USB_DeviceState != DEVICE_STATE_Configured) || !(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS))
+	if (!(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS))
 	  return -1;
 
 	int16_t ReceivedByte = -1;
