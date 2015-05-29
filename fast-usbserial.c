@@ -48,7 +48,7 @@ static uint8_t USBtoUSART_buf[USB2USART_BUFLEN];
 
 #define USART2USB_BUFLEN 256
 #define USART2USB_NEAR_FULL CDC_IN_EPSIZE
-static uint8_t USARTtoUSB_wrp __attribute__((used)) = 0;
+#define USARTtoUSB_wrp GPIOR1
 
 /* NOTE: Reserved 256 bytes from start of RAM at 0x100 for this via linker magic,
  * so we can use 256-byte aligned addresssing. */
@@ -56,7 +56,7 @@ static uint8_t USARTtoUSB_wrp __attribute__((used)) = 0;
 //#define USART2USB_BUFADDR 0x100
 
 //static uint8_t USARTtoUSB_buf[USART2USB_BUFLEN];
-static volatile uint8_t USARTtoUSB_cnt = 0;
+#define USARTtoUSB_cnt GPIOR2
 
 /** Pulse generation counters to keep track of the number of milliseconds remaining for each pulse type */
 struct
@@ -306,13 +306,13 @@ ISR(USART1_RX_vect, ISR_NAKED)
 	"lds r24, %0\n\t" // UDR1
 	"push r30\n\t"
 	"push r31\n\t"
-	"lds r30, %2\n\t" // USARTtoUSB_wrp
+	"in r30, %2\n\t" // USARTtoUSB_wrp
 	"ldi r31, 0x01\n\t"
 	"st Z+, r24\n\t"
-	"sts %2, r30\n\t"
-	"lds r24, %3\n\t" // USARTtoUSB_cnt
+	"out %2, r30\n\t"
+	"in r24, %3\n\t" // USARTtoUSB_cnt
 	"inc r24\n\t"
-	"sts %3, r24\n\t" // ++
+	"out %3, r24\n\t" // ++
 	"pop r31\n\t"
 	"pop r30\n\t"
 	"pop r24\n\t"
@@ -320,7 +320,7 @@ ISR(USART1_RX_vect, ISR_NAKED)
 	"pop r1\n\t"
 	"reti\n\t"
 	:: "m" (UDR1), "I" (_SFR_IO_ADDR(SREG)),
-	   "m" (USARTtoUSB_wrp), "m" (USARTtoUSB_cnt)
+	   "I" (_SFR_IO_ADDR(USARTtoUSB_wrp)), "I" (_SFR_IO_ADDR(USARTtoUSB_cnt))
 	);
 }
 
