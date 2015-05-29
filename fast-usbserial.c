@@ -109,8 +109,10 @@ int main(void)
 		USARTtoUSB_cnt = 0;
 		USARTtoUSB_wrp = 0;
 		sei();
+		Endpoint_SelectEndpoint(ENDPOINT_CONTROLEP);
 		do {
-			USB_USBTask();
+			if (Endpoint_IsSETUPReceived())
+			  USB_Device_ProcessControlRequest();
 			TCNT0 = 0;
 		} while (USB_DeviceState != DEVICE_STATE_Configured);
 		UCSR1B |= _BV(RXCIE1);
@@ -205,7 +207,9 @@ int main(void)
 					if (PulseMSRemaining.RxLEDPulse && !(--PulseMSRemaining.RxLEDPulse))
 					  LEDs_TurnOffLEDs(LEDMASK_RX);
 				}
-				USB_USBTask();
+				Endpoint_SelectEndpoint(ENDPOINT_CONTROLEP);
+				if (Endpoint_IsSETUPReceived())
+				  USB_Device_ProcessControlRequest();
 				if(USB_DeviceState != DEVICE_STATE_Configured) break;
 			}
 			/* CDC_Device_USBTask would only flush TX which we already do. */
