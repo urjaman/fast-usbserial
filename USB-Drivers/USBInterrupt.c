@@ -34,16 +34,11 @@
 void USB_INT_DisableAllInterrupts(void)
 {
 	#if defined(USB_SERIES_6_AVR) || defined(USB_SERIES_7_AVR)
-	USBCON &= ~((1 << VBUSTE) | (1 << IDTE));				
+	USBCON &= ~((1 << VBUSTE) | (1 << IDTE));
 	#elif defined(USB_SERIES_4_AVR)
 	USBCON &= ~(1 << VBUSTE);
 	#endif
-	
-	#if defined(USB_CAN_BE_HOST)
-	UHIEN   = 0;
-	OTGIEN  = 0;
-	#endif
-	
+
 	#if defined(USB_CAN_BE_DEVICE)
 	UDIEN   = 0;
 	#endif
@@ -54,12 +49,7 @@ void USB_INT_ClearAllInterrupts(void)
 	#if defined(USB_SERIES_4_AVR) || defined(USB_SERIES_6_AVR) || defined(USB_SERIES_7_AVR)
 	USBINT  = 0;
 	#endif
-	
-	#if defined(USB_CAN_BE_HOST)
-	UHINT   = 0;
-	OTGINT  = 0;
-	#endif
-	
+
 	#if defined(USB_CAN_BE_DEVICE)
 	UDINT   = 0;
 	#endif
@@ -85,13 +75,18 @@ ISR(USB_GEN_vect, ISR_BLOCK __attribute__((flatten)) )
 		}
 	}
 	#endif
+	uint8_t enabled = UDIEN;
+	uint8_t occurred = UDINT;
+	occurred &= enabled;
+#ifdef USB_SERIES_2_AVR
+	UDIEN = 0;
+	sei();
+#endif
 
-	if (USB_INT_HasOccurred(USB_INT_SUSPEND) && USB_INT_IsEnabled(USB_INT_SUSPEND))
-	{
-		USB_INT_Clear(USB_INT_SUSPEND);
-
-		USB_INT_Disable(USB_INT_SUSPEND);
-		USB_INT_Enable(USB_INT_WAKEUP);
+	if (occurred & _BV(SUSPI)) {
+		UDINT = ~_BV(SUSPI);
+		enabled &= ~ _BV(SUSPE);
+		enabled |= _BV(WAKEUPE);
 
 		USB_CLK_Freeze();
 
@@ -107,8 +102,7 @@ ISR(USB_GEN_vect, ISR_BLOCK __attribute__((flatten)) )
 		#endif
 	}
 
-	if (USB_INT_HasOccurred(USB_INT_WAKEUP) && USB_INT_IsEnabled(USB_INT_WAKEUP))
-	{
+	if (occurred & _BV(WAKEUPI)) {
 		if (!(USB_Options & USB_OPT_MANUAL_PLL))
 		{
 			USB_PLL_On();
@@ -117,10 +111,10 @@ ISR(USB_GEN_vect, ISR_BLOCK __attribute__((flatten)) )
 
 		USB_CLK_Unfreeze();
 
-		USB_INT_Clear(USB_INT_WAKEUP);
+		UDINT = ~_BV(WAKEUPI);
 
-		USB_INT_Disable(USB_INT_WAKEUP);
-		USB_INT_Enable(USB_INT_SUSPEND);
+		enabled &= ~_BV(WAKEUPE);
+		enabled |= _BV(SUSPE);
 
 		#if defined(USB_SERIES_2_AVR) && !defined(NO_LIMITED_CONTROLLER_CONNECT)
 		USB_DeviceState = (USB_ConfigurationNumber) ? DEVICE_STATE_Configured : DEVICE_STATE_Powered;
@@ -131,16 +125,14 @@ ISR(USB_GEN_vect, ISR_BLOCK __attribute__((flatten)) )
 		#endif
 	}
 
-	if (USB_INT_HasOccurred(USB_INT_EORSTI) && USB_INT_IsEnabled(USB_INT_EORSTI))
-	{
-		USB_INT_Clear(USB_INT_EORSTI);
+	if (occurred & _BV(EORSTI)) {
+		UDINT = ~( _BV(EORSTI) | _BV(SUSPI) );
 
 		USB_DeviceState         = DEVICE_STATE_Default;
 		USB_ConfigurationNumber = 0;
 
-		USB_INT_Clear(USB_INT_SUSPEND);
-		USB_INT_Disable(USB_INT_SUSPEND);
-		USB_INT_Enable(USB_INT_WAKEUP);
+		enabled &= ~_BV(SUSPE);
+		enabled |= ~_BV(WAKEUPE);
 
 		Endpoint_ClearEndpoints();
 
@@ -154,12 +146,11 @@ ISR(USB_GEN_vect, ISR_BLOCK __attribute__((flatten)) )
 
 		EVENT_USB_Device_Reset();
 	}
+#ifdef USB_SERIES_2_AVR
+	cli();
+#endif
+	UDIEN = enabled;
 
-	if (USB_INT_HasOccurred(USB_INT_SOFI) && USB_INT_IsEnabled(USB_INT_SOFI))
-	{
-		USB_INT_Clear(USB_INT_SOFI);
-		EVENT_USB_Device_StartOfFrame();
-	}
 	#endif
 
 }
