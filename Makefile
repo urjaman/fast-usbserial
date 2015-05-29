@@ -150,7 +150,7 @@ SRC = $(TARGET).c                                                 \
           USB-Drivers/DeviceStandardReq.c \
           USB-Drivers/Events.c            \
           USB-Drivers/USBTask.c           \
-	  USB-Drivers/CDC.c
+	  USB-Drivers/SimpleCDC.c
 
 
 # List C++ source files here. (C dependencies are automatically generated.)

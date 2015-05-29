@@ -63,6 +63,12 @@
 		#define CDC_OUT_EPSIZE                32
 		#define CDC_IN_EPSIZE                64
 
+		#define CDC_CONTROL_EPNUM		0
+
+		#define CDC_OUT_DBLBANK	0
+		#define CDC_IN_DBLBANK 1
+
+		#define CDC_NOTIFICATION_DBLBANK 0
 	/* Type Defines: */
 		/** Type define for the device configuration descriptor structure. This must be defined in the
 		 *  application code, as the configuration descriptor contains several sub-descriptors which

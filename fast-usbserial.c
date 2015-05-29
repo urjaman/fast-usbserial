@@ -69,7 +69,8 @@ struct
  *  passed to all CDC Class driver functions, so that multiple instances of the same class
  *  within a device can be differentiated from one another.
  */
-USB_ClassInfo_CDC_Device_t VirtualSerial_CDC_Interface =
+USB_ClassInfo_CDC_Device_t VirtualSerial_CDC_Interface;
+#if 0
 	{
 		.Config =
 			{
@@ -88,7 +89,7 @@ USB_ClassInfo_CDC_Device_t VirtualSerial_CDC_Interface =
 				.NotificationEndpointDoubleBank = false,
 			},
 	};
-
+#endif
 /** Main program entry point. This routine contains the overall program flow, including initial
  *  setup of all components and the main program loop.
  */
