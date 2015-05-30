@@ -59,11 +59,6 @@ static uint8_t USBtoUSART_buf[USB2USART_BUFLEN];
 #define USARTtoUSB_cnt GPIOR2
 
 /** Pulse generation counters to keep track of the number of milliseconds remaining for each pulse type */
-struct
-{
-	uint8_t TxLEDPulse; /**< Milliseconds remaining for data Tx LED pulse */
-	uint8_t RxLEDPulse; /**< Milliseconds remaining for data Rx LED pulse */
-} PulseMSRemaining;
 
 /** LUFA CDC Class driver interface configuration and state information. This structure is
  *  passed to all CDC Class driver functions, so that multiple instances of the same class
@@ -80,6 +75,11 @@ int main(void)
 	SetupHardware();
 	sei();
 	for (;;) {
+		struct {
+			uint8_t TxLEDPulse; /**< Milliseconds remaining for data Tx LED pulse */
+			uint8_t RxLEDPulse; /**< Milliseconds remaining for data Rx LED pulse */
+		} PulseMSRemaining;
+
 		/* Let the compiler decide where these are. */
 		uint8_t USBtoUSART_wrp = 0;
 		uint8_t USBtoUSART_rdp = 0;
@@ -197,6 +197,8 @@ int main(void)
 			/* CDC_Device_USBTask would only flush TX which we already do. */
 			//CDC_Device_USBTask(&VirtualSerial_CDC_Interface);
 		}
+		LEDs_TurnOffLEDs(LEDMASK_TX);
+		LEDs_TurnOffLEDs(LEDMASK_RX);
 	}
 }
 
