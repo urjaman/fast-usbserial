@@ -56,7 +56,6 @@ static uint8_t USBtoUSART_buf[USB2USART_BUFLEN];
 //#define USART2USB_BUFADDR 0x100
 
 //static uint8_t USARTtoUSB_buf[USART2USB_BUFLEN];
-#define USARTtoUSB_cnt GPIOR2
 
 /** Pulse generation counters to keep track of the number of milliseconds remaining for each pulse type */
 
@@ -83,12 +82,10 @@ int main(void)
 		/* Let the compiler decide where these are. */
 		uint8_t USBtoUSART_wrp = 0;
 		uint8_t USBtoUSART_rdp = 0;
-		uint8_t USBtoUSART_cnt = 0;
 		uint8_t USARTtoUSB_rdp = 0;
 		uint8_t last_cnt = 0;
 		cli();
 		UCSR1B &= ~_BV(RXCIE1);
-		USARTtoUSB_cnt = 0;
 		USARTtoUSB_wrp = 0;
 		sei();
 		Endpoint_SelectEndpoint(ENDPOINT_CONTROLEP);
@@ -102,8 +99,8 @@ int main(void)
 		// While USB_DeviceState == DEVICE_STATE_Configured, but proper exit point
 			uint8_t timer_ovrflw = TIFR0 & _BV(TOV0);
 			if (timer_ovrflw) TIFR0 = _BV(TOV0);
-			/* I'd like to get rid of these counters... */
-			uint8_t cnt = USARTtoUSB_cnt;
+			/* This requires the rcv buffer to be 256 bytes. */
+			uint8_t cnt = USARTtoUSB_wrp - USARTtoUSB_rdp;
 			/* Check if the UART receive buffer flush timer has expired or the buffer is nearly full */
 			if ( ((cnt >= USART2USB_NEAR_FULL) || (timer_ovrflw && cnt)) &&
 				(CDC_Device_SendByte_Prep(&VirtualSerial_CDC_Interface) == 0) ) {
@@ -131,14 +128,7 @@ int main(void)
 				} while (--txcnt);
 		                Endpoint_ClearIN(); /* Go data, GO. */
 				USARTtoUSB_rdp = tmp & 0xFF;
-				cli();
-				/* This will be logically OK, even if more bytes arrived during TX,
-				 * because we sent cnt bytes, so removed that much from the buffer. */
-				uint8_t l = USARTtoUSB_cnt;
-				l -= cnt;
-				last_cnt = l;
-				USARTtoUSB_cnt = l;
-				sei();
+				last_cnt -= cnt;
 				LEDs_TurnOnLEDs(LEDMASK_TX);
 				PulseMSRemaining.TxLEDPulse = TX_RX_LED_PULSE_MS;
 				TCNT0 = 0;
@@ -149,6 +139,7 @@ int main(void)
 			} else {
 				/* My guess is that this branch will be run regularly, even during full output, because
 				   USB hosts are poor at servicing devices... thus moved the control IF service here too. */
+				uint8_t USBtoUSART_cnt = (USBtoUSART_wrp - USBtoUSART_rdp) & (USB2USART_BUFLEN-1);
 
 				/* Only try to read in bytes from the CDC interface if the transmit buffer is not full */
 				if (USBtoUSART_cnt < (USB2USART_BUFLEN-1)) {
@@ -161,18 +152,16 @@ int main(void)
 					  wrp++;
 					  wrp &= (USB2USART_BUFLEN-1);
 					  USBtoUSART_wrp = wrp;
-					  USBtoUSART_cnt++;
 					}
 				}
 
-				if (USBtoUSART_cnt) {
+				if (USBtoUSART_rdp != USBtoUSART_wrp) {
 					if (UCSR1A & (1 << UDRE1)) {
 						uint8_t rdp = USBtoUSART_rdp;
 						UDR1 = USBtoUSART_buf[rdp];
 						rdp++;
 						rdp &= (USB2USART_BUFLEN-1);
 						USBtoUSART_rdp = rdp;
-						USBtoUSART_cnt--;
 					  	LEDs_TurnOnLEDs(LEDMASK_RX);
 						PulseMSRemaining.RxLEDPulse = TX_RX_LED_PULSE_MS;
 					}
@@ -296,14 +285,11 @@ ISR(USART1_RX_vect, ISR_NAKED)
 	"ldi r31, 0x01\n\t"
 	"st Z+, r3\n\t"
 	"out %2, r30\n\t"
-	"in r3, %3\n\t" // USARTtoUSB_cnt
-	"inc r3\n\t"
-	"out %3, r3\n\t" // ++
 	"movw r30, r4\n\t"
 	"out %1, r2\n\t"
 	"reti\n\t"
 	:: "m" (UDR1), "I" (_SFR_IO_ADDR(SREG)),
-	   "I" (_SFR_IO_ADDR(USARTtoUSB_wrp)), "I" (_SFR_IO_ADDR(USARTtoUSB_cnt))
+	   "I" (_SFR_IO_ADDR(USARTtoUSB_wrp))
 	);
 }
 
