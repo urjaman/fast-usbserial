@@ -377,5 +377,11 @@
 		#include "Device.h"
 		#include "Endpoint.h"
 		#include "DeviceStandardReq.h"
+
+		/* I think most C files should include this file so they should know r2-r5 are reserved. */
+		register uint8_t urx_rsvd2 asm("r2");
+		register uint8_t urx_rsvd3 asm("r3");
+		register uint8_t urx_rsvd4 asm("r4");
+		register uint8_t urx_rsvd5 asm("r5");
 #endif
 

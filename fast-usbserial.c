@@ -116,7 +116,7 @@ int main(void)
 				asm (
 				/* Do not initialize high byte, it will be done on first loop. */
 				"mov %A0, %1\n\t"
-				: "=&z" (tmp)
+				: "=&e" (tmp)
 				: "r" (USARTtoUSB_rdp)
 				);
 				do {
@@ -124,7 +124,7 @@ int main(void)
 					asm (
 					"ldi %B1, 0x01\n\t" /* Force high byte */
 					"ld %0, %a1+\n\t"
-					: "=&r" (d), "=z" (tmp)
+					: "=&r" (d), "=e" (tmp)
 					: "1" (tmp)
 					);
                 	                Endpoint_Write_Byte(d);
@@ -289,24 +289,18 @@ void EVENT_CDC_Device_LineEncodingChanged(USB_ClassInfo_CDC_Device_t* const CDCI
 ISR(USART1_RX_vect, ISR_NAKED)
 {
 	asm volatile (
-	"push r1\n\t"
-	"in r1, %1\n\t" // SREG
-	"push r24\n\t"
-	"lds r24, %0\n\t" // UDR1
-	"push r30\n\t"
-	"push r31\n\t"
+	"in r2, %1\n\t" // SREG
+	"lds r3, %0\n\t" // UDR1
+	"movw r4, r30\n\t"
 	"in r30, %2\n\t" // USARTtoUSB_wrp
 	"ldi r31, 0x01\n\t"
-	"st Z+, r24\n\t"
+	"st Z+, r3\n\t"
 	"out %2, r30\n\t"
-	"in r24, %3\n\t" // USARTtoUSB_cnt
-	"inc r24\n\t"
-	"out %3, r24\n\t" // ++
-	"pop r31\n\t"
-	"pop r30\n\t"
-	"pop r24\n\t"
-	"out %1, r1\n\t"
-	"pop r1\n\t"
+	"in r3, %3\n\t" // USARTtoUSB_cnt
+	"inc r3\n\t"
+	"out %3, r3\n\t" // ++
+	"movw r30, r4\n\t"
+	"out %1, r2\n\t"
 	"reti\n\t"
 	:: "m" (UDR1), "I" (_SFR_IO_ADDR(SREG)),
 	   "I" (_SFR_IO_ADDR(USARTtoUSB_wrp)), "I" (_SFR_IO_ADDR(USARTtoUSB_cnt))
