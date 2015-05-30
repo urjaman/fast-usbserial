@@ -277,19 +277,17 @@ void EVENT_CDC_Device_LineEncodingChanged(USB_ClassInfo_CDC_Device_t* const CDCI
 
 ISR(USART1_RX_vect, ISR_NAKED)
 {
+	/* This ISR doesnt change SREG. Whoa. */
 	asm volatile (
-	"in r2, %1\n\t" // SREG
 	"lds r3, %0\n\t" // UDR1
 	"movw r4, r30\n\t"
-	"in r30, %2\n\t" // USARTtoUSB_wrp
+	"in r30, %1\n\t" // USARTtoUSB_wrp
 	"ldi r31, 0x01\n\t"
 	"st Z+, r3\n\t"
-	"out %2, r30\n\t"
+	"out %1, r30\n\t"
 	"movw r30, r4\n\t"
-	"out %1, r2\n\t"
 	"reti\n\t"
-	:: "m" (UDR1), "I" (_SFR_IO_ADDR(SREG)),
-	   "I" (_SFR_IO_ADDR(USARTtoUSB_wrp))
+	:: "m" (UDR1), "I" (_SFR_IO_ADDR(USARTtoUSB_wrp))
 	);
 }
 
