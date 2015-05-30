@@ -41,23 +41,22 @@
 
 #include "fast-usbserial.h"
 
-/* Needs to be power-of-2 */
-#define USB2USART_BUFLEN 64
-static uint8_t USBtoUSART_buf[USB2USART_BUFLEN];
+/* NOTE: Using Linker Magic,
+ * - Reserved 256 bytes from start of RAM at 0x100 for UART RX Buffer
+ * so we can use 256-byte aligned addresssing.
+ * - Also 128 bytes from 0x200 for UART TX buffer, same addressing. */
 
+
+#define USB2USART_BUFLEN 128
+#define USBtoUSART_rdp GPIOR0
+/* USBtoUSART_rdp is GPIOR0 so it can be masked with cbi. */
+static volatile uint8_t USBtoUSART_wrp = 0;
+/* USBtoUSART_wrp needs to be visible to ISR so saddly needs to be here. */
 
 #define USART2USB_BUFLEN 256
-#define USART2USB_NEAR_FULL CDC_IN_EPSIZE
 #define USARTtoUSB_wrp GPIOR1
 
-/* NOTE: Reserved 256 bytes from start of RAM at 0x100 for this via linker magic,
- * so we can use 256-byte aligned addresssing. */
-/* But since everybody just knows this (ldi high 0x01) i commented this out. */
-//#define USART2USB_BUFADDR 0x100
 
-//static uint8_t USARTtoUSB_buf[USART2USB_BUFLEN];
-
-/** Pulse generation counters to keep track of the number of milliseconds remaining for each pulse type */
 
 /** LUFA CDC Class driver interface configuration and state information. This structure is
  *  passed to all CDC Class driver functions, so that multiple instances of the same class
@@ -74,19 +73,18 @@ int main(void)
 	SetupHardware();
 	sei();
 	for (;;) {
+		/** Pulse generation counters to keep track of the number of milliseconds remaining for each pulse type */
 		struct {
 			uint8_t TxLEDPulse; /**< Milliseconds remaining for data Tx LED pulse */
 			uint8_t RxLEDPulse; /**< Milliseconds remaining for data Rx LED pulse */
-		} PulseMSRemaining;
-
-		/* Let the compiler decide where these are. */
-		uint8_t USBtoUSART_wrp = 0;
-		uint8_t USBtoUSART_rdp = 0;
+		} PulseMSRemaining = { 0,0 };
 		uint8_t USARTtoUSB_rdp = 0;
 		uint8_t last_cnt = 0;
 		cli();
 		UCSR1B &= ~_BV(RXCIE1);
 		USARTtoUSB_wrp = 0;
+		USBtoUSART_wrp = 0;
+		USBtoUSART_rdp = 0;
 		sei();
 		Endpoint_SelectEndpoint(ENDPOINT_CONTROLEP);
 		do {
@@ -99,10 +97,10 @@ int main(void)
 		// While USB_DeviceState == DEVICE_STATE_Configured, but proper exit point
 			uint8_t timer_ovrflw = TIFR0 & _BV(TOV0);
 			if (timer_ovrflw) TIFR0 = _BV(TOV0);
-			/* This requires the rcv buffer to be 256 bytes. */
+			/* This requires the UART RX buffer to be 256 bytes. */
 			uint8_t cnt = USARTtoUSB_wrp - USARTtoUSB_rdp;
 			/* Check if the UART receive buffer flush timer has expired or the buffer is nearly full */
-			if ( ((cnt >= USART2USB_NEAR_FULL) || (timer_ovrflw && cnt)) &&
+			if ( ((cnt >= CDC_IN_EPSIZE) || (timer_ovrflw && cnt)) &&
 				(CDC_Device_SendByte_Prep(&VirtualSerial_CDC_Interface) == 0) ) {
 				/* Endpoint will always be empty since we're the only writer
 				 * and we flush after every write. */
@@ -139,32 +137,41 @@ int main(void)
 			} else {
 				/* My guess is that this branch will be run regularly, even during full output, because
 				   USB hosts are poor at servicing devices... thus moved the control IF service here too. */
-				uint8_t USBtoUSART_cnt = (USBtoUSART_wrp - USBtoUSART_rdp) & (USB2USART_BUFLEN-1);
+				uint8_t USBtoUSART_free = (USB2USART_BUFLEN-1) - ( (USBtoUSART_wrp - USBtoUSART_rdp) & (USB2USART_BUFLEN-1) );
+				uint8_t rxd;
+				if ( ((rxd = CDC_Device_BytesReceived(&VirtualSerial_CDC_Interface))) && (rxd <= USBtoUSART_free) ) {
+					uint16_t tmp; //  = 0x200 | USBtoUSART_wrp;
+					uint8_t d;
+					asm (
+					"ldi %B0, 0x02\n\t"
+					"lds %A0, %1\n\t"
+					: "=&e" (tmp)
+					: "m" (USBtoUSART_wrp)
+					);
 
-				/* Only try to read in bytes from the CDC interface if the transmit buffer is not full */
-				if (USBtoUSART_cnt < (USB2USART_BUFLEN-1)) {
-					int16_t ReceivedByte = CDC_Device_ReceiveByte(&VirtualSerial_CDC_Interface);
+					do {
+						d = Endpoint_Read_Byte();
+						asm (
+						"st %a0+, %1\n\t"
+						"andi %A0, 0x7F\n\t"
+						: "=e" (tmp)
+						: "0" (tmp), "r" (d)
+						);
+					} while (--rxd);
+					Endpoint_ClearOUT();
+					USBtoUSART_wrp = tmp & (USB2USART_BUFLEN-1);
+					UCSR1B = (_BV(RXCIE1) | _BV(TXEN1) | _BV(RXEN1) | _BV(UDRIE1));
+					LEDs_TurnOnLEDs(LEDMASK_RX);
+					PulseMSRemaining.RxLEDPulse = TX_RX_LED_PULSE_MS;
+					TCNT0 = 0;
 
-					/* Read byte from the USB OUT endpoint into the USART transmit buffer */
-					if (!(ReceivedByte < 0)) {
-					  uint8_t wrp = USBtoUSART_wrp;
-					  USBtoUSART_buf[wrp] = ReceivedByte;
-					  wrp++;
-					  wrp &= (USB2USART_BUFLEN-1);
-					  USBtoUSART_wrp = wrp;
-					}
+					/* This prevents RX from forgetting to turn off TX led. */
+					/* The TX led period will be saddened though */
+					if (PulseMSRemaining.TxLEDPulse && !(--PulseMSRemaining.TxLEDPulse))
+					  LEDs_TurnOffLEDs(LEDMASK_TX);
+
 				}
-
 				if (USBtoUSART_rdp != USBtoUSART_wrp) {
-					if (UCSR1A & (1 << UDRE1)) {
-						uint8_t rdp = USBtoUSART_rdp;
-						UDR1 = USBtoUSART_buf[rdp];
-						rdp++;
-						rdp &= (USB2USART_BUFLEN-1);
-						USBtoUSART_rdp = rdp;
-					  	LEDs_TurnOnLEDs(LEDMASK_RX);
-						PulseMSRemaining.RxLEDPulse = TX_RX_LED_PULSE_MS;
-					}
 					TCNT0 = 0;
 				}
 				if (cnt != last_cnt) {
@@ -186,6 +193,7 @@ int main(void)
 			/* CDC_Device_USBTask would only flush TX which we already do. */
 			//CDC_Device_USBTask(&VirtualSerial_CDC_Interface);
 		}
+		/* Dont forget LEDs on if suddenly unconfigured. */
 		LEDs_TurnOffLEDs(LEDMASK_TX);
 		LEDs_TurnOffLEDs(LEDMASK_RX);
 	}
@@ -262,6 +270,9 @@ void EVENT_CDC_Device_LineEncodingChanged(USB_ClassInfo_CDC_Device_t* const CDCI
 	UCSR1A = 0;
 	UCSR1C = 0;
 
+	USBtoUSART_rdp = 0;
+	USBtoUSART_wrp = 0;
+
 	/* Leave it off if BaudRate == 0. */
 	if (!CDCInterfaceInfo->State.LineEncoding.BaudRateBPS) return;
 
@@ -288,6 +299,30 @@ ISR(USART1_RX_vect, ISR_NAKED)
 	"movw r30, r4\n\t"
 	"reti\n\t"
 	:: "m" (UDR1), "I" (_SFR_IO_ADDR(USARTtoUSB_wrp))
+	);
+}
+
+ISR(USART1_UDRE_vect, ISR_NAKED)
+{
+	/* Another SREG-less ISR. */
+	asm volatile (
+	"movw r4, r30\n\t"
+	"in r30, %1\n\t" // USBtoUSART_rdp
+	"ldi r31, 0x02\n\t"
+	"ld r3, Z+\n\t"
+	"sts %0, r3\n\t"
+	"out %1, r30\n\t"
+	"cbi %1, 7\n\t" // smart after-the-fact andi 0x7F without using SREG :P
+	"movw r30, r4\n\t"
+	"in r2, %1\n\t"
+	"lds r3, %2\n\t" // USBtoUSART_wrp
+	"cpse r2, r3\n\t"
+	"reti\n\t"
+	"ldi r30, 0x98\n\t" // Turn self off
+	"sts %3, r30\n\t"
+	"movw r30, r4\n\t"
+	"reti\n\t"
+	:: "m" (UDR1), "I" (_SFR_IO_ADDR(USBtoUSART_rdp)), "m" (USBtoUSART_wrp), "m" (UCSR1B)
 	);
 }
 
