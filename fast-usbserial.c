@@ -152,7 +152,7 @@ int main(void)
 					do {
 						d = Endpoint_Read_Byte();
 						asm (
-						"st %a0+, %1\n\t"
+						"st %a0+, %2\n\t"
 						"andi %A0, 0x7F\n\t"
 						: "=e" (tmp)
 						: "0" (tmp), "r" (d)
