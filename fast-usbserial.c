@@ -270,19 +270,29 @@ void EVENT_CDC_Device_LineEncodingChanged(USB_ClassInfo_CDC_Device_t* const CDCI
 	UCSR1A = 0;
 	UCSR1C = 0;
 
+	/* Flush data that was about to be sent. */
 	USBtoUSART_rdp = 0;
 	USBtoUSART_wrp = 0;
 
 	/* Leave it off if BaudRate == 0. */
 	if (!CDCInterfaceInfo->State.LineEncoding.BaudRateBPS) return;
 
+	uint8_t sreg = _BV(U2X1);
+	uint16_t brr;
 	/* Special case 57600 baud for compatibility with the ATmega328 bootloader. */
-	UBRR1  = (CDCInterfaceInfo->State.LineEncoding.BaudRateBPS == 57600)
-			 ? SERIAL_UBBRVAL(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS)
-			 : SERIAL_2X_UBBRVAL(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS);
-
+	if (CDCInterfaceInfo->State.LineEncoding.BaudRateBPS == 57600) {
+		brr = SERIAL_UBBRVAL(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS);
+		sreg = 0;
+	} else {
+		brr = SERIAL_2X_UBBRVAL(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS);
+		if (brr&1) { // No need U2X
+			brr = brr>>1;
+			sreg = 0;
+		}
+	}
+	UBRR1 = brr;
 	UCSR1C = ConfigMask;
-	UCSR1A = (CDCInterfaceInfo->State.LineEncoding.BaudRateBPS == 57600) ? 0 : (1 << U2X1);
+	UCSR1A = sreg;
 	UCSR1B = ((1 << RXCIE1) | (1 << TXEN1) | (1 << RXEN1));
 }
 
