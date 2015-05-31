@@ -37,6 +37,7 @@
 #define _ARDUINO_USBSERIAL_H_
 
 	/* Includes: */
+		#include "GlobalRegs.h"
 		#include <avr/io.h>
 		#include <avr/wdt.h>
 		#include <avr/interrupt.h>

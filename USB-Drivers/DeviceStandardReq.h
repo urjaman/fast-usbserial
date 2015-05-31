@@ -41,6 +41,8 @@
 #ifndef __DEVICESTDREQ_H__
 #define __DEVICESTDREQ_H__
 
+		#include "GlobalRegs.h"
+
 	/* Includes: */
 		#include <avr/pgmspace.h>
 		#include <avr/eeprom.h>

@@ -48,6 +48,7 @@
 
 #ifndef __USBDEVICE_H__
 #define __USBDEVICE_H__
+		#include "GlobalRegs.h"
 
 	/* Includes: */
 		#include <avr/io.h>

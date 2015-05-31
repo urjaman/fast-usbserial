@@ -40,6 +40,7 @@
 
 #ifndef __USBTASK_H__
 #define __USBTASK_H__
+		#include "GlobalRegs.h"
 
 	/* Includes: */
 		#include <avr/interrupt.h>

@@ -53,6 +53,7 @@
 
 #ifndef __USBMODE_H__
 #define __USBMODE_H__
+		#include "GlobalRegs.h"
 
 	/* Preprocessor Checks: */
 		#if !defined(__INCLUDE_FROM_USB_DRIVER)

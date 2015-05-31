@@ -40,6 +40,7 @@
  
 #ifndef __USBINTERRUPT_H__
 #define __USBINTERRUPT_H__
+		#include "GlobalRegs.h"
 
 	/* Includes: */
 		#include <avr/io.h>

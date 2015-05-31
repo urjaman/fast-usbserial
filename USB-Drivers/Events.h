@@ -67,6 +67,7 @@
  
 #ifndef __USBEVENTS_H__
 #define __USBEVENTS_H__
+		#include "GlobalRegs.h"
 
 	/* Includes: */
 		#include <stdint.h>

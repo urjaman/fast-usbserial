@@ -38,6 +38,7 @@
  *  Main source file for the fast-usbserial project. This file contains the main tasks of
  *  the project and is responsible for the initial application hardware configuration.
  */
+#include <stdint.h>
 
 #include "fast-usbserial.h"
 
@@ -50,7 +51,6 @@
 #define USB2USART_BUFLEN 128
 #define USBtoUSART_rdp GPIOR0
 /* USBtoUSART_rdp is GPIOR0 so it can be masked with cbi. */
-static volatile uint8_t USBtoUSART_wrp = 0;
 /* USBtoUSART_wrp needs to be visible to ISR so saddly needs to be here. */
 
 #define USART2USB_BUFLEN 256
@@ -83,7 +83,7 @@ int main(void)
 		cli();
 		UCSR1B &= ~_BV(RXCIE1);
 		USARTtoUSB_wrp = 0;
-		USBtoUSART_wrp = 0;
+		asm volatile ("mov r2, r1\n\t"); // USBtoUSART_wrp = 0
 		USBtoUSART_rdp = 0;
 		sei();
 		Endpoint_SelectEndpoint(ENDPOINT_CONTROLEP);
@@ -137,16 +137,17 @@ int main(void)
 			} else {
 				/* My guess is that this branch will be run regularly, even during full output, because
 				   USB hosts are poor at servicing devices... thus moved the control IF service here too. */
-				uint8_t USBtoUSART_free = (USB2USART_BUFLEN-1) - ( (USBtoUSART_wrp - USBtoUSART_rdp) & (USB2USART_BUFLEN-1) );
+				uint8_t wrp;
+				asm ( "mov %0, r2\n\t" : "=r" (wrp) : );
+				uint8_t USBtoUSART_free = (USB2USART_BUFLEN-1) - ( (wrp - USBtoUSART_rdp) & (USB2USART_BUFLEN-1) );
 				uint8_t rxd;
 				if ( ((rxd = CDC_Device_BytesReceived(&VirtualSerial_CDC_Interface))) && (rxd <= USBtoUSART_free) ) {
 					uint16_t tmp; //  = 0x200 | USBtoUSART_wrp;
 					uint8_t d;
 					asm (
 					"ldi %B0, 0x02\n\t"
-					"lds %A0, %1\n\t"
+					"mov %A0, r2\n\t"
 					: "=&e" (tmp)
-					: "m" (USBtoUSART_wrp)
 					);
 
 					do {
@@ -159,7 +160,10 @@ int main(void)
 						);
 					} while (--rxd);
 					Endpoint_ClearOUT();
-					USBtoUSART_wrp = tmp & (USB2USART_BUFLEN-1);
+					asm volatile(
+					"mov r2, %A0\n\t"
+					:: "e" (tmp)
+					);
 					UCSR1B = (_BV(RXCIE1) | _BV(TXEN1) | _BV(RXEN1) | _BV(UDRIE1));
 					LEDs_TurnOnLEDs(LEDMASK_RX);
 					PulseMSRemaining.RxLEDPulse = TX_RX_LED_PULSE_MS;
@@ -171,7 +175,8 @@ int main(void)
 					  LEDs_TurnOffLEDs(LEDMASK_TX);
 
 				}
-				if (USBtoUSART_rdp != USBtoUSART_wrp) {
+				asm ( "mov %0, r2\n\t" : "=r" (wrp) : );
+				if (USBtoUSART_rdp != wrp) {
 					TCNT0 = 0;
 				}
 				if (cnt != last_cnt) {
@@ -272,7 +277,7 @@ void EVENT_CDC_Device_LineEncodingChanged(USB_ClassInfo_CDC_Device_t* const CDCI
 
 	/* Flush data that was about to be sent. */
 	USBtoUSART_rdp = 0;
-	USBtoUSART_wrp = 0;
+	asm volatile ("mov r2, r1\n\t");
 
 	/* Leave it off if BaudRate == 0. */
 	if (!CDCInterfaceInfo->State.LineEncoding.BaudRateBPS) return;
@@ -324,15 +329,14 @@ ISR(USART1_UDRE_vect, ISR_NAKED)
 	"out %1, r30\n\t"
 	"cbi %1, 7\n\t" // smart after-the-fact andi 0x7F without using SREG :P
 	"movw r30, r4\n\t"
-	"in r2, %1\n\t"
-	"lds r3, %2\n\t" // USBtoUSART_wrp
-	"cpse r2, r3\n\t"
+	"in r3, %1\n\t"
+	"cpse r3, r2\n\t" // r2 is USBtoUSART_wrp
 	"reti\n\t"
 	"ldi r30, 0x98\n\t" // Turn self off
-	"sts %3, r30\n\t"
+	"sts %2, r30\n\t"
 	"movw r30, r4\n\t"
 	"reti\n\t"
-	:: "m" (UDR1), "I" (_SFR_IO_ADDR(USBtoUSART_rdp)), "m" (USBtoUSART_wrp), "m" (UCSR1B)
+	:: "m" (UDR1), "I" (_SFR_IO_ADDR(USBtoUSART_rdp)), "m" (UCSR1B)
 	);
 }
 

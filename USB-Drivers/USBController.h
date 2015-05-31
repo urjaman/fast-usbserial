@@ -48,6 +48,7 @@
 
 #ifndef __USBCONTROLLER_H__
 #define __USBCONTROLLER_H__
+		#include "GlobalRegs.h"
 
 	/* Includes: */
 		#include <avr/io.h>

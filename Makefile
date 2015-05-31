@@ -140,7 +140,7 @@ LUFA_ROOT_PATH = $(LUFA_PATH)/LUFA
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = $(TARGET).c                                                 \
+SRC =	  $(TARGET).c                                                 \
 	  Descriptors.c                                               \
           USB-Drivers/Device.c             \
           USB-Drivers/Endpoint.c           \
@@ -470,9 +470,6 @@ OBJ = $(SRC:%.c=$(OBJDIR)/%.o) $(CPPSRC:%.cpp=$(OBJDIR)/%.o) $(ASRC:%.S=$(OBJDIR
 LST = $(SRC:%.c=$(OBJDIR)/%.lst) $(CPPSRC:%.cpp=$(OBJDIR)/%.lst) $(ASRC:%.S=$(OBJDIR)/%.lst) 
 
 
-# Compiler flags to generate dependency files.
-GENDEPFLAGS = -MMD -MP -MF .dep/$(@F).d
-
 
 # Combine all necessary flags and optional flags.
 # Add target processor to flags.
@@ -489,7 +486,7 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I. -x assembler-with-cpp $(ASFLAGS)
 all: begin gccversion sizebefore build showliboptions showtarget sizeafter end
 
 # Change the build target to build a HEX file or a library.
-build: elf hex eep lss sym asm
+build: elf hex
 #build: lib
 
 
@@ -553,8 +550,8 @@ gccversion :
 
 
 # Program the device.  
-program: $(TARGET).hex $(TARGET).eep
-	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH) $(AVRDUDE_WRITE_EEPROM)
+program: $(TARGET).hex
+	$(AVRDUDE) $(AVRDUDE_FLAGS) $(AVRDUDE_WRITE_FLASH)
 
 flip: $(TARGET).hex
 	batchisp -hardware usb -device $(MCU_DFU) -operation erase f
@@ -564,7 +561,7 @@ flip: $(TARGET).hex
 dfu: $(TARGET).hex
 	-dfu-programmer $(MCU_DFU) erase
 	dfu-programmer $(MCU_DFU) flash --debug 1 $(TARGET).hex
-	dfu-programmer $(MCU_DFU) launch --no-reset
+	-dfu-programmer $(MCU_DFU) launch --no-reset
 
 
 flip-ee: $(TARGET).hex $(TARGET).eep
@@ -619,11 +616,7 @@ objdump: $(TARGET).elf
 
 
 # Link: create ELF output file from object files.
-.SECONDARY : $(TARGET).elf
-.PRECIOUS : $(OBJ)
-%.elf: $(OBJ)
-	@echo
-	@echo $(MSG_LINKING) $@
+$(TARGET).elf: $(SRC)
 	$(CC) $(ALL_CFLAGS) $^ --output $@ $(LDFLAGS)
 
 
@@ -689,9 +682,6 @@ clean_list:
 # Create object files directory
 $(shell mkdir $(OBJDIR) 2>/dev/null)
 
-
-# Include the dependency files.
--include $(shell mkdir .dep 2>/dev/null) $(wildcard .dep/*)
 
 
 # Listing of phony targets.

@@ -48,6 +48,7 @@
  
 #ifndef __USBDESCRIPTORS_H__
 #define __USBDESCRIPTORS_H__
+		#include "GlobalRegs.h"
 
 	/* Includes: */
 		#include <avr/pgmspace.h>

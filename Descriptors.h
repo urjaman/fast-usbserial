@@ -37,6 +37,7 @@
 #define _DESCRIPTORS_H_
 
 	/* Includes: */
+		#include "GlobalRegs.h"
 		#include <avr/pgmspace.h>
 
 		#include "USB.h"

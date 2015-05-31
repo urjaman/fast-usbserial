@@ -49,6 +49,7 @@
 
 #ifndef __CONFIGDESCRIPTOR_H__
 #define __CONFIGDESCRIPTOR_H__
+		#include "GlobalRegs.h"
 
 	/* Includes: */
 		#include <stdint.h>

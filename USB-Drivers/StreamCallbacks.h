@@ -50,6 +50,7 @@
  
 #ifndef __STREAMCALLBACK_H__
 #define __STREAMCALLBACK_H__
+		#include "GlobalRegs.h"
 
 	/* Includes: */
 		#include <stdint.h>

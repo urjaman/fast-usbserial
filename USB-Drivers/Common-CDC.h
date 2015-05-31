@@ -49,6 +49,7 @@
  
 #ifndef _CDC_CLASS_COMMON_H_
 #define _CDC_CLASS_COMMON_H_
+		#include "GlobalRegs.h"
 
 	/* Includes: */
 		#include "USB.h"

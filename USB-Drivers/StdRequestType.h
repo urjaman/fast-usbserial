@@ -48,6 +48,7 @@
 
 #ifndef __STDREQTYPE_H__
 #define __STDREQTYPE_H__
+		#include "GlobalRegs.h"
 
 	/* Includes: */
 		#include <stdint.h>

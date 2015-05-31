@@ -74,6 +74,7 @@
 
 #ifndef __ENDPOINT_H__
 #define __ENDPOINT_H__
+		#include "GlobalRegs.h"
 
 	/* Includes: */
 		#include <avr/io.h>

@@ -69,6 +69,7 @@
 
 #ifndef _CDC_CLASS_DEVICE_H_
 #define _CDC_CLASS_DEVICE_H_
+		#include "GlobalRegs.h"
 
 	/* Includes: */
 		#include "USB.h"

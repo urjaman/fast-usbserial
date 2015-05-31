@@ -69,6 +69,7 @@
 
 #ifndef __LEDS_H__
 #define __LEDS_H__
+		#include "GlobalRegs.h"
 
 	/* Macros: */
 	#if !defined(__DOXYGEN__)

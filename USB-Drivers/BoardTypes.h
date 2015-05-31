@@ -49,6 +49,7 @@
 	
 #ifndef __BOARDTYPES_H__
 #define __BOARDTYPES_H__
+		#include "GlobalRegs.h"
 
 	/* Preprocessor Checks: */
 		#if !defined(__COMMON_H__)
