@@ -63,7 +63,7 @@
 #	versions of either avrdude or dfu-programmer, we specify a dummy
 #	part; AT90USB82 which is close enough in memory size and organization
 MCU = atmega16u2
-MCU_AVRDUDE = at90usb82
+MCU_AVRDUDE = m16u2
 MCU_DFU = atmega16u2
 
 # Specify the Arduino model using the assigned PID.  This is used by Descriptors.c
@@ -164,7 +164,7 @@ CPPSRC =
 #     Even though the DOS/Win* filesystem matches both .s and .S the same,
 #     it will preserve the spelling of the filenames, and gcc itself does
 #     care about how the name is spelled on its command-line.
-ASRC =
+ASRC = debug_tx.S
 
 
 # Optimization level, can be [0, 1, 2, 3, s]. 
@@ -384,7 +384,7 @@ AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex
 # to submit bug reports.
 #AVRDUDE_VERBOSE = -v -v
 
-AVRDUDE_FORCE = -F
+AVRDUDE_FORCE =
 
 AVRDUDE_FLAGS = -p $(MCU_AVRDUDE) -P $(AVRDUDE_PORT) -c $(AVRDUDE_PROGRAMMER)
 AVRDUDE_FLAGS += $(AVRDUDE_NO_VERIFY)

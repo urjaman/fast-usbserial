@@ -40,6 +40,7 @@
  */
 
 #include "fast-usbserial.h"
+#include <avr/eeprom.h>
 
 /* NOTE: Using Linker Magic,
  * - Reserved 256 bytes from start of RAM at 0x100 for UART RX Buffer
@@ -56,7 +57,14 @@ static volatile uint8_t USBtoUSART_wrp = 0;
 #define USART2USB_BUFLEN 256
 #define USARTtoUSB_wrp GPIOR1
 
+//#define DEBUGTX
 
+#ifdef DEBUGTX
+#include "debug_tx.h"
+#define DEBUGB(x) debug_send(x)
+#else
+#define DEBUGB(x)
+#endif
 
 /** LUFA CDC Class driver interface configuration and state information. This structure is
  *  passed to all CDC Class driver functions, so that multiple instances of the same class
@@ -71,7 +79,12 @@ USB_ClassInfo_CDC_Device_t VirtualSerial_CDC_Interface;
 int main(void)
 {
 	SetupHardware();
+#ifdef DEBUGTX
+	PORTB |= _BV(4);
+	DDRB |= _BV(4);
+#endif
 	sei();
+	DEBUGB(0xE1);
 	for (;;) {
 		/** Pulse generation counters to keep track of the number of milliseconds remaining for each pulse type */
 		struct {
@@ -107,6 +120,8 @@ int main(void)
 				uint8_t txcnt = CDC_IN_EPSIZE;
 				if (txcnt > cnt) txcnt = cnt;
 				cnt = txcnt; /* Save real amount of TX. */
+				DEBUGB(0xE2);
+				DEBUGB(cnt);
 				uint16_t tmp;
 				asm (
 				/* Do not initialize high byte, it will be done on first loop. */
@@ -123,6 +138,7 @@ int main(void)
 					: "1" (tmp)
 					);
                 	                Endpoint_Write_Byte(d);
+					DEBUGB(d);
 				} while (--txcnt);
 		                Endpoint_ClearIN(); /* Go data, GO. */
 				USARTtoUSB_rdp = tmp & 0xFF;
@@ -141,6 +157,8 @@ int main(void)
 				uint8_t rxd;
 				if ( ((rxd = CDC_Device_BytesReceived(&VirtualSerial_CDC_Interface))) && (rxd <= USBtoUSART_free) ) {
 					uint16_t tmp; //  = 0x200 | USBtoUSART_wrp;
+					DEBUGB(0xE0);
+					DEBUGB(rxd);
 					uint8_t d;
 					asm (
 					"ldi %B0, 0x02\n\t"
@@ -157,6 +175,7 @@ int main(void)
 						: "=e" (tmp)
 						: "0" (tmp), "r" (d)
 						);
+						DEBUGB(d);
 					} while (--rxd);
 					Endpoint_ClearOUT();
 					USBtoUSART_wrp = tmp & (USB2USART_BUFLEN-1);
