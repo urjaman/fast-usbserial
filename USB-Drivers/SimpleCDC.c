@@ -100,6 +100,13 @@ bool CDC_Device_ConfigureEndpoints(USB_ClassInfo_CDC_Device_t* const CDCInterfac
 {
 	memset(&CDCInterfaceInfo->State, 0x00, sizeof(CDCInterfaceInfo->State));
 
+	if (!(Endpoint_ConfigureEndpoint(CDC_NOTIFICATION_EPNUM, EP_TYPE_INTERRUPT,
+	                                 ENDPOINT_DIR_IN, CDC_NOTIFICATION_EPSIZE,
+	                                 CDC_NOTIFICATION_DBLBANK ? ENDPOINT_BANK_DOUBLE : ENDPOINT_BANK_SINGLE)))
+	{
+		return false;
+	}
+
 	if (!(Endpoint_ConfigureEndpoint(CDC_TX_EPNUM, EP_TYPE_BULK,
 							         ENDPOINT_DIR_IN, CDC_IN_EPSIZE,
 							         CDC_IN_DBLBANK ? ENDPOINT_BANK_DOUBLE : ENDPOINT_BANK_SINGLE)))
@@ -110,13 +117,6 @@ bool CDC_Device_ConfigureEndpoints(USB_ClassInfo_CDC_Device_t* const CDCInterfac
 	if (!(Endpoint_ConfigureEndpoint(CDC_RX_EPNUM, EP_TYPE_BULK,
 	                                 ENDPOINT_DIR_OUT, CDC_OUT_EPSIZE,
 	                                 CDC_OUT_DBLBANK ? ENDPOINT_BANK_DOUBLE : ENDPOINT_BANK_SINGLE)))
-	{
-		return false;
-	}
-
-	if (!(Endpoint_ConfigureEndpoint(CDC_NOTIFICATION_EPNUM, EP_TYPE_INTERRUPT,
-	                                 ENDPOINT_DIR_IN, CDC_NOTIFICATION_EPSIZE,
-	                                 CDC_NOTIFICATION_DBLBANK ? ENDPOINT_BANK_DOUBLE : ENDPOINT_BANK_SINGLE)))
 	{
 		return false;
 	}
