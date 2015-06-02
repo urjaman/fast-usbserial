@@ -195,8 +195,6 @@ int main(void)
 			if (Endpoint_IsSETUPReceived())
 			  USB_Device_ProcessControlRequest();
 
-			/* CDC_Device_USBTask would only flush TX which we already do. */
-			//CDC_Device_USBTask(&VirtualSerial_CDC_Interface);
 		} while (USB_DeviceState == DEVICE_STATE_Configured);
 		/* Dont forget LEDs on if suddenly unconfigured. */
 		LEDs_TurnOffLEDs(LEDMASK_TX);
