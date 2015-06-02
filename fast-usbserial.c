@@ -107,7 +107,7 @@ int main(void)
 		UCSR1B |= _BV(RXCIE1);
 		TIFR0 = _BV(TOV0);
 		TIFR1 = _BV(TOV1);
-		while(1) {
+		do {
 			uint8_t USBtoUSART_free = (USB2USART_BUFLEN-1) - ( (USBtoUSART_wrp - USBtoUSART_rdp) & (USB2USART_BUFLEN-1) );
 			uint8_t rxd;
 			if ( ((rxd = CDC_Device_BytesReceived(&VirtualSerial_CDC_Interface))) && (rxd <= USBtoUSART_free) ) {
@@ -194,11 +194,10 @@ int main(void)
 			Endpoint_SelectEndpoint(ENDPOINT_CONTROLEP);
 			if (Endpoint_IsSETUPReceived())
 			  USB_Device_ProcessControlRequest();
-			if(USB_DeviceState != DEVICE_STATE_Configured) break;
 
 			/* CDC_Device_USBTask would only flush TX which we already do. */
 			//CDC_Device_USBTask(&VirtualSerial_CDC_Interface);
-		}
+		} while (USB_DeviceState == DEVICE_STATE_Configured);
 		/* Dont forget LEDs on if suddenly unconfigured. */
 		LEDs_TurnOffLEDs(LEDMASK_TX);
 		LEDs_TurnOffLEDs(LEDMASK_RX);
