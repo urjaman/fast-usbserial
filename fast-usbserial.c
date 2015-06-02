@@ -106,7 +106,7 @@ int main(void)
 		} while (USB_DeviceState != DEVICE_STATE_Configured);
 		UCSR1B |= _BV(RXCIE1);
 		TIFR0 = _BV(TOV0);
-		TIFR1 = _BV(TOV1);
+		TIFR1 = _BV(OCF1A);
 		do {
 			uint8_t USBtoUSART_free = (USB2USART_BUFLEN-1) - ( (USBtoUSART_wrp - USBtoUSART_rdp) & (USB2USART_BUFLEN-1) );
 			uint8_t rxd;
