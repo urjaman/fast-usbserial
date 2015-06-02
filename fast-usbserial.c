@@ -151,9 +151,9 @@ int main(void)
 				 * and we flush after every write. */
 				uint8_t txcnt = CDC_IN_EPSIZE;
 				if (txcnt > cnt) txcnt = cnt;
-				cnt = txcnt; /* Save real amount of TX. */
+				last_cnt -= txcnt;
 				DEBUGB(0xE2);
-				DEBUGB(cnt);
+				DEBUGB(txcnt);
 				uint16_t tmp;
 				asm (
 				/* Do not initialize high byte, it will be done on first loop. */
@@ -174,7 +174,6 @@ int main(void)
 				} while (--txcnt);
 		                Endpoint_ClearIN(); /* Go data, GO. */
 				USARTtoUSB_rdp = tmp & 0xFF;
-				last_cnt -= cnt;
 				goto txled;
 			} else if (last_cnt != cnt) {
 				TCNT1 = 0;
