@@ -103,17 +103,49 @@ int main(void)
 		do {
 			if (Endpoint_IsSETUPReceived())
 			  USB_Device_ProcessControlRequest();
-			TCNT0 = 0;
 		} while (USB_DeviceState != DEVICE_STATE_Configured);
 		UCSR1B |= _BV(RXCIE1);
+		TIFR0 = _BV(TOV0);
+		TIFR1 = _BV(TOV1);
 		while(1) {
-		// While USB_DeviceState == DEVICE_STATE_Configured, but proper exit point
-			uint8_t timer_ovrflw = TIFR0 & _BV(TOV0);
-			if (timer_ovrflw) TIFR0 = _BV(TOV0);
+			uint8_t USBtoUSART_free = (USB2USART_BUFLEN-1) - ( (USBtoUSART_wrp - USBtoUSART_rdp) & (USB2USART_BUFLEN-1) );
+			uint8_t rxd;
+			if ( ((rxd = CDC_Device_BytesReceived(&VirtualSerial_CDC_Interface))) && (rxd <= USBtoUSART_free) ) {
+				uint16_t tmp; //  = 0x200 | USBtoUSART_wrp;
+				DEBUGB(0xE0);
+				DEBUGB(rxd);
+				uint8_t d;
+				asm (
+				"ldi %B0, 0x02\n\t"
+				"lds %A0, %1\n\t"
+				: "=&e" (tmp)
+				: "m" (USBtoUSART_wrp)
+				);
+				do {
+					d = Endpoint_Read_Byte();
+					asm (
+					"st %a0+, %2\n\t"
+					"andi %A0, 0x7F\n\t"
+					: "=e" (tmp)
+					: "0" (tmp), "r" (d)
+					);
+					DEBUGB(d);
+				} while (--rxd);
+				Endpoint_ClearOUT();
+				USBtoUSART_wrp = tmp & (USB2USART_BUFLEN-1);
+				UCSR1B = (_BV(RXCIE1) | _BV(TXEN1) | _BV(RXEN1) | _BV(UDRIE1));
+				goto rxled;
+			} else if (USBtoUSART_wrp != USBtoUSART_rdp) {
+				rxled:
+				LEDs_TurnOnLEDs(LEDMASK_RX);
+				PulseMSRemaining.RxLEDPulse = TX_RX_LED_PULSE_MS;
+			}
 			/* This requires the UART RX buffer to be 256 bytes. */
 			uint8_t cnt = USARTtoUSB_wrp - USARTtoUSB_rdp;
+			uint8_t flush_overflow = TIFR1 & _BV(OCF1A);
+			if (flush_overflow) TIFR1 = _BV(OCF1A);
 			/* Check if the UART receive buffer flush timer has expired or the buffer is nearly full */
-			if ( ((cnt >= CDC_IN_EPSIZE) || (timer_ovrflw && cnt)) &&
+			if ( ((cnt >= CDC_IN_EPSIZE) || (flush_overflow && cnt)) &&
 				(CDC_Device_SendByte_Prep(&VirtualSerial_CDC_Interface) == 0) ) {
 				/* Endpoint will always be empty since we're the only writer
 				 * and we flush after every write. */
@@ -137,78 +169,33 @@ int main(void)
 					: "=&r" (d), "=e" (tmp)
 					: "1" (tmp)
 					);
-                	                Endpoint_Write_Byte(d);
+       	         	                Endpoint_Write_Byte(d);
 					DEBUGB(d);
 				} while (--txcnt);
 		                Endpoint_ClearIN(); /* Go data, GO. */
 				USARTtoUSB_rdp = tmp & 0xFF;
 				last_cnt -= cnt;
+				goto txled;
+			} else if (last_cnt != cnt) {
+				TCNT1 = 0;
+				last_cnt = cnt;
+				txled:
 				LEDs_TurnOnLEDs(LEDMASK_TX);
 				PulseMSRemaining.TxLEDPulse = TX_RX_LED_PULSE_MS;
-				TCNT0 = 0;
-				/* This prevents TX from forgetting to turn off RX led. */
-				/* The RX led period will be saddened though */
+			}
+			if (TIFR0 & _BV(TOV0)) { /* LED timer overflow. */
+				TIFR0 = _BV(TOV0);
+				/* Turn off TX LED(s) once the TX pulse period has elapsed */
+				if (PulseMSRemaining.TxLEDPulse && !(--PulseMSRemaining.TxLEDPulse))
+				  LEDs_TurnOffLEDs(LEDMASK_TX);
 				if (PulseMSRemaining.RxLEDPulse && !(--PulseMSRemaining.RxLEDPulse))
 				  LEDs_TurnOffLEDs(LEDMASK_RX);
-			} else {
-				/* My guess is that this branch will be run regularly, even during full output, because
-				   USB hosts are poor at servicing devices... thus moved the control IF service here too. */
-				uint8_t USBtoUSART_free = (USB2USART_BUFLEN-1) - ( (USBtoUSART_wrp - USBtoUSART_rdp) & (USB2USART_BUFLEN-1) );
-				uint8_t rxd;
-				if ( ((rxd = CDC_Device_BytesReceived(&VirtualSerial_CDC_Interface))) && (rxd <= USBtoUSART_free) ) {
-					uint16_t tmp; //  = 0x200 | USBtoUSART_wrp;
-					DEBUGB(0xE0);
-					DEBUGB(rxd);
-					uint8_t d;
-					asm (
-					"ldi %B0, 0x02\n\t"
-					"lds %A0, %1\n\t"
-					: "=&e" (tmp)
-					: "m" (USBtoUSART_wrp)
-					);
-
-					do {
-						d = Endpoint_Read_Byte();
-						asm (
-						"st %a0+, %2\n\t"
-						"andi %A0, 0x7F\n\t"
-						: "=e" (tmp)
-						: "0" (tmp), "r" (d)
-						);
-						DEBUGB(d);
-					} while (--rxd);
-					Endpoint_ClearOUT();
-					USBtoUSART_wrp = tmp & (USB2USART_BUFLEN-1);
-					UCSR1B = (_BV(RXCIE1) | _BV(TXEN1) | _BV(RXEN1) | _BV(UDRIE1));
-					LEDs_TurnOnLEDs(LEDMASK_RX);
-					PulseMSRemaining.RxLEDPulse = TX_RX_LED_PULSE_MS;
-					TCNT0 = 0;
-
-					/* This prevents RX from forgetting to turn off TX led. */
-					/* The TX led period will be saddened though */
-					if (PulseMSRemaining.TxLEDPulse && !(--PulseMSRemaining.TxLEDPulse))
-					  LEDs_TurnOffLEDs(LEDMASK_TX);
-
-				}
-				if (USBtoUSART_rdp != USBtoUSART_wrp) {
-					TCNT0 = 0;
-				}
-				if (cnt != last_cnt) {
-					TCNT0 = 0;
-					last_cnt = cnt;
-				}
-				if (timer_ovrflw) {
-					/* Turn off TX LED(s) once the TX pulse period has elapsed */
-					if (PulseMSRemaining.TxLEDPulse && !(--PulseMSRemaining.TxLEDPulse))
-					  LEDs_TurnOffLEDs(LEDMASK_TX);
-					if (PulseMSRemaining.RxLEDPulse && !(--PulseMSRemaining.RxLEDPulse))
-					  LEDs_TurnOffLEDs(LEDMASK_RX);
-				}
-				Endpoint_SelectEndpoint(ENDPOINT_CONTROLEP);
-				if (Endpoint_IsSETUPReceived())
-				  USB_Device_ProcessControlRequest();
-				if(USB_DeviceState != DEVICE_STATE_Configured) break;
 			}
+			Endpoint_SelectEndpoint(ENDPOINT_CONTROLEP);
+			if (Endpoint_IsSETUPReceived())
+			  USB_Device_ProcessControlRequest();
+			if(USB_DeviceState != DEVICE_STATE_Configured) break;
+
 			/* CDC_Device_USBTask would only flush TX which we already do. */
 			//CDC_Device_USBTask(&VirtualSerial_CDC_Interface);
 		}
@@ -230,8 +217,13 @@ void SetupHardware(void)
 	LEDs_Init();
 	USB_Init();
 
-	/* Start the flush timer so that overflows occur rapidly to push received bytes to the USB interface */
-	TCCR0B = (1 << CS01) | (1 << CS00);
+	/* Timer0 is the LED timeout timer... */
+	TCCR0B = _BV(CS02);
+
+	/* Timer1 is the USB flush timeout timer. */
+	OCR1A = 8000; // 0.5ms at 16Mhz
+	TCCR1A = 0;
+	TCCR1B = _BV(WGM12) | _BV(CS10);
 
 	/* Pull target /RESET line high */
 	AVR_RESET_LINE_PORT |= AVR_RESET_LINE_MASK;
