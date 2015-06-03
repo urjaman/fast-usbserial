@@ -175,9 +175,9 @@ int main(void)
 				USARTtoUSB_rdp = tmp & 0xFF;
 				goto txled;
 			} else if (last_cnt != cnt) {
-				TCNT1 = 0;
 				last_cnt = cnt;
 				txled:
+				TCNT1 = 0;
 				LEDs_TurnOnLEDs(LEDMASK_TX);
 				PulseMSRemaining.TxLEDPulse = TX_RX_LED_PULSE_MS;
 			}
