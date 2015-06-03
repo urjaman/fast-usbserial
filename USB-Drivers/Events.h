@@ -64,13 +64,13 @@
  *
  *  @{
  */
- 
+
 #ifndef __USBEVENTS_H__
 #define __USBEVENTS_H__
 
 	/* Includes: */
 		#include <stdint.h>
-		
+
 		#include "Common-Common.h"
 		#include "USBMode.h"
 
@@ -83,8 +83,8 @@
 		#if !defined(__INCLUDE_FROM_USB_DRIVER)
 			#error Do not include this file directly. Include LUFA/Drivers/USB/USB.h instead.
 		#endif
-		
-	/* Public Interface - May be used in end-application: */			
+
+	/* Public Interface - May be used in end-application: */
 		/* Pseudo-Functions for Doxygen: */
 		#if !defined(__INCLUDE_FROM_EVENTS_C) || defined(__DOXYGEN__)
 			/** Event for USB stack initialization failure. This event fires when the USB interface fails to
@@ -121,7 +121,7 @@
 			 *        \ref Group_USBManagement documentation).
 			 */
 			void EVENT_USB_Host_HostError(const uint8_t ErrorCode);
-			
+
 			/** Event for USB device attachment. This event fires when a the USB interface is in host mode, and
 			 *  a USB device has been connected to the USB interface. This is interrupt driven, thus fires before
 			 *  the standard \ref EVENT_USB_Device_Connect() event and so can be used to programmatically start the USB
@@ -150,11 +150,11 @@
 			 *  \see \ref USB_USBTask() for more information on the USB management task and reducing CPU usage.
 			 */
 			void EVENT_USB_Host_DeviceUnattached(void);
-			
+
 			/** Event for USB device enumeration failure. This event fires when a the USB interface is
 			 *  in host mode, and an attached USB device has failed to enumerate completely.
 			 *
-			 *  \param[in] ErrorCode     Error code indicating the failure reason, a value in 
+			 *  \param[in] ErrorCode     Error code indicating the failure reason, a value in
 			 *                           \ref USB_Host_EnumerationErrorCodes_t.
 			 *
 			 *  \param[in] SubErrorCode  Sub error code indicating the reason for failure - for example, if the
@@ -319,18 +319,18 @@
 			 */
 			void EVENT_USB_Device_StartOfFrame(void);
 		#endif
-		
+
 	/* Private Interface - For use in library only: */
 	#if !defined(__DOXYGEN__)
 		/* Function Prototypes: */
 			#if defined(__INCLUDE_FROM_EVENTS_C)
 				void USB_Event_Stub(void) ATTR_CONST;
-					
+
 				#if defined(USB_CAN_BE_BOTH)
 					void EVENT_USB_InitFailure(const uint8_t ErrorCode) ATTR_WEAK ATTR_ALIAS(USB_Event_Stub);
 					void EVENT_USB_UIDChange(void) ATTR_WEAK ATTR_ALIAS(USB_Event_Stub);
 				#endif
-				
+
 				#if defined(USB_CAN_BE_HOST)
 					void EVENT_USB_Host_HostError(const uint8_t ErrorCode) ATTR_WEAK ATTR_ALIAS(USB_Event_Stub);
 					void EVENT_USB_Host_DeviceAttached(void) ATTR_WEAK ATTR_ALIAS(USB_Event_Stub);
@@ -358,7 +358,7 @@
 		#if defined(__cplusplus)
 			}
 		#endif
-	
+
 #endif
 
 /** @} */

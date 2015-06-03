@@ -75,12 +75,12 @@
 		#define __INCLUDE_FROM_LEDS_H
 		#define INCLUDE_FROM_LEDS_H
 	#endif
-	
+
 	/* Includes: */
 	#include "Common-Common.h"
 
 		#include "Board/LEDs.h"
-	
+
 	#if !defined(LEDS_LED1)
 		#define LEDS_LED1      0
 	#endif
@@ -96,7 +96,7 @@
 	#if !defined(LEDS_LED4)
 		#define LEDS_LED4      0
 	#endif
-	
+
 	/* Pseudo-Functions for Doxygen: */
 	#if defined(__DOXYGEN__)
 		/** Initialises the board LED driver so that the LEDs can be controlled. This sets the appropriate port
@@ -131,7 +131,7 @@
 		 */
 		static inline void LEDs_ChangeLEDs(const uint8_t LEDMask,
 		                                   const uint8_t ActiveMask);
-		
+
 		/** Toggles all LEDs in the LED mask, leaving all others in their current states.
 		 *
 		 *  \param[in] LEDMask  Mask of the board LEDs to manipulate (see board-specific LEDs.h driver file).

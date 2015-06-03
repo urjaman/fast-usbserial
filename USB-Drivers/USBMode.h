@@ -58,7 +58,7 @@
 		#if !defined(__INCLUDE_FROM_USB_DRIVER)
 			#error Do not include this file directly. Include LUFA/Drivers/USB/USB.h instead.
 		#endif
-		
+
 	/* Public Interface - May be used in end-application: */
 	#if defined(__DOXYGEN__)
 		/** Indicates that the target AVR microcontroller belongs to the Series 2 USB controller
@@ -96,7 +96,7 @@
 		 */
 		#define USB_CAN_BE_BOTH
 	#else
-		/* Macros: */			
+		/* Macros: */
 			#if (defined(__AVR_AT90USB162__) || defined(__AVR_AT90USB82__)  || \
 			     defined(__AVR_ATmega32U2__) || defined(__AVR_ATmega16U2__) || defined(__AVR_ATmega8U2__))
 				#define USB_SERIES_2_AVR
@@ -106,13 +106,13 @@
 				#define USB_SERIES_6_AVR
 			#elif (defined(__AVR_AT90USB647__) || defined(__AVR_AT90USB1287__))
 				#define USB_SERIES_7_AVR
-			#endif			
+			#endif
 
-			#if !defined(USB_SERIES_7_AVR)		
+			#if !defined(USB_SERIES_7_AVR)
 				#if defined(USB_HOST_ONLY)
 					#error USB_HOST_ONLY is not available for the currently selected USB AVR model.
 				#endif
-				
+
 				#if !defined(USB_DEVICE_ONLY)
 					#define USB_DEVICE_ONLY
 				#endif
@@ -127,12 +127,12 @@
 			#elif defined(USB_DEVICE_ONLY)
 				#define USB_CAN_BE_DEVICE
 			#endif
-			
+
 			#if (defined(USB_HOST_ONLY) && defined(USB_DEVICE_ONLY))
 				#error USB_HOST_ONLY and USB_DEVICE_ONLY are mutually exclusive.
 			#endif
 	#endif
-	
+
 #endif
 
 /** @} */

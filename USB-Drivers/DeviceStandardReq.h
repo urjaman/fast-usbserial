@@ -48,7 +48,7 @@
 		#include <util/atomic.h>
 		#include <stdint.h>
 		#include <stdbool.h>
-		
+
 		#include "StdDescriptors.h"
 		#include "Events.h"
 		#include "StdRequestType.h"
@@ -64,13 +64,13 @@
 		#if !defined(__INCLUDE_FROM_USB_DRIVER)
 			#error Do not include this file directly. Include LUFA/Drivers/USB/USB.h instead.
 		#endif
-		
+
 	/* Public Interface - May be used in end-application: */
 		/* Macros: */
 			#if defined(USE_SINGLE_DEVICE_CONFIGURATION)
 				#define FIXED_NUM_CONFIGURATIONS           1
 			#endif
-	
+
 		/* Enums: */
 			#if !defined(USE_FLASH_DESCRIPTORS) && !defined(USE_EEPROM_DESCRIPTORS) && !defined(USE_RAM_DESCRIPTORS)
 				/** Enum for the possible descriptor memory spaces, for the MemoryAddressSpace of the
@@ -86,7 +86,7 @@
 					MEMSPACE_RAM      = 2, /**< Indicates the requested descriptor is located in RAM memory. */
 				};
 			#endif
-	
+
 		/* Global Variables: */
 			/** Indicates the currently set configuration number of the device. USB devices may have several
 			 *  different configurations which the host can select between; this indicates the currently selected
@@ -98,7 +98,7 @@
 			 *  \ingroup Group_Device
 			 */
 			extern uint8_t USB_ConfigurationNumber;
-			
+
 			#if !defined(NO_DEVICE_REMOTE_WAKEUP)
 				/** Indicates if the host is currently allowing the device to issue remote wakeup events. If this
 				 *  flag is cleared, the device should not issue remote wakeup events to the host.
@@ -116,7 +116,7 @@
 				 */
 				extern bool USB_RemoteWakeupEnabled;
 			#endif
-			
+
 			#if !defined(NO_DEVICE_SELF_POWER)
 				/** Indicates if the device is currently being powered by its own power supply, rather than being
 				 *  powered by the host's USB supply. This flag should remain cleared if the device does not
@@ -126,7 +126,7 @@
 				 */
 				extern bool USB_CurrentlySelfPowered;
 			#endif
-	
+
 	/* Private Interface - For use in library only: */
 	#if !defined(__DOXYGEN__)
 		#if defined(USE_RAM_DESCRIPTORS) && defined(USE_EEPROM_DESCRIPTORS)
@@ -138,10 +138,10 @@
 		#elif defined(USE_FLASH_DESCRIPTORS) && defined(USE_EEPROM_DESCRIPTORS) && defined(USE_RAM_DESCRIPTORS)
 			#error Only one of the USE_*_DESCRIPTORS modes should be selected.
 		#endif
-	
+
 		/* Function Prototypes: */
 			void USB_Device_ProcessControlRequest(void);
-			
+
 			#if defined(__INCLUDE_FROM_DEVICESTDREQ_C)
 				static void USB_Device_SetAddress(void);
 				static void USB_Device_SetConfiguration(void);
@@ -149,11 +149,11 @@
 				static void USB_Device_GetDescriptor(void);
 				static void USB_Device_GetStatus(void);
 				static void USB_Device_ClearSetFeature(void);
-				
+
 				#if !defined(NO_INTERNAL_SERIAL) && (USE_INTERNAL_SERIAL != NO_DESCRIPTOR)
 					static char USB_Device_NibbleToASCII(uint8_t Nibble) ATTR_ALWAYS_INLINE;
 					static void USB_Device_GetInternalSerialDescriptor(void);
-				#endif				
+				#endif	
 			#endif
 	#endif
 
@@ -161,5 +161,5 @@
 		#if defined(__cplusplus)
 			}
 		#endif
-		
+
 #endif

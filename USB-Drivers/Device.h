@@ -67,7 +67,7 @@
 		#if !defined(__INCLUDE_FROM_USB_DRIVER)
 			#error Do not include this file directly. Include LUFA/Drivers/USB/USB.h instead.
 		#endif
-			
+
 	/* Public Interface - May be used in end-application: */
 		/* Macros: */
 			#if defined(USB_SERIES_4_AVR) || defined(USB_SERIES_6_AVR) || defined(USB_SERIES_7_AVR) || defined(__DOXYGEN__)
@@ -82,7 +82,7 @@
 				 */
 				#define USB_DEVICE_OPT_LOWSPEED            (1 << 0)
 			#endif
-			
+
 			/** Mask for the Options parameter of the \ref USB_Init() function. This indicates that the
 			 *  USB interface should be initialized in full speed (12Mb/s) mode.
 			 */
@@ -109,7 +109,7 @@
 			 *  \see \ref Group_Descriptors for more information on the RMWAKEUP feature and device descriptors.
 			 */
 			void USB_Device_SendRemoteWakeup(void);
-			
+
 		/* Type Defines: */
 			enum USB_Device_States_t
 			{
@@ -138,7 +138,7 @@
 				                                                *   resumed.
 				                                                */
 			};
-			
+
 		/* Inline Functions: */
 			/** Enables the device mode Start Of Frame events. When enabled, this causes the
 			 *  \ref EVENT_USB_Device_StartOfFrame() event to fire once per millisecond, synchronized to the USB bus,
@@ -149,7 +149,7 @@
 			{
 				USB_INT_Enable(USB_INT_SOFI);
 			}
-				
+
 			/** Disables the device mode Start Of Frame events. When disabled, this stop the firing of the
 			 *  \ref EVENT_USB_Device_StartOfFrame() event when enumerated in device mode.
 			 */
@@ -158,7 +158,7 @@
 			{
 				USB_INT_Disable(USB_INT_SOFI);
 			}
-			
+
 		/* Function Prototypes: */
 			/** Function to retrieve a given descriptor's size and memory location from the given descriptor type value,
 			 *  index and language ID. This function MUST be overridden in the user application (added with full, identical  
@@ -202,19 +202,19 @@
 			{
 				UDCON |=  (1 << LSM);
 			}
-			
+
 			static inline void USB_Device_SetFullSpeed(void) ATTR_ALWAYS_INLINE;
 			static inline void USB_Device_SetFullSpeed(void)
 			{
 				UDCON &= ~(1 << LSM);
 			}
 			#endif
-			
+
 			static inline void USB_Device_SetDeviceAddress(const uint8_t Address) ATTR_ALWAYS_INLINE;
 			static inline void USB_Device_SetDeviceAddress(const uint8_t Address)
 			{
 				UDADDR = ((1 << ADDEN) | (Address & 0x7F));
-			}			
+			}
 	#endif
 
 #endif

@@ -582,6 +582,9 @@ dfu-ee: $(TARGET).hex $(TARGET).eep
 objdump: $(TARGET).elf
 	avr-objdump -xdC $(TARGET).elf | less
 
+objdumpS: $(TARGET).elf
+	avr-objdump -xdSC $(TARGET).elf | less
+
 
 # Create final output files (.hex, .eep) from ELF output file.
 %.hex: %.elf

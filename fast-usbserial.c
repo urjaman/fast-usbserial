@@ -40,7 +40,6 @@
  */
 
 #include "fast-usbserial.h"
-#include <avr/eeprom.h>
 
 /* NOTE: Using Linker Magic,
  * - Reserved 256 bytes from start of RAM at 0x100 for UART RX Buffer

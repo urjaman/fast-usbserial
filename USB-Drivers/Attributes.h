@@ -67,7 +67,7 @@
 				 *  return code may be omitted by the compiler in the resulting binary.
 				 */
 				#define ATTR_NO_RETURN              __attribute__ ((noreturn))
-				
+
 				/** Indicates that the function returns a value which should not be ignored by the user code. When
 				 *  applied, any ignored return value from calling the function will produce a compiler warning.
 				 */
@@ -84,7 +84,7 @@
 				 *  is responsible for maintaining stack and register integrity.
 				 */
 				#define ATTR_NAKED                  __attribute__ ((naked))
-				
+
 				/** Prevents the compiler from considering a specified function for inlining. When applied, the given
 				 *  function will not be inlined under any circumstances.
 				 */
@@ -94,25 +94,25 @@
 				 *  inlined under all circumstances.
 				 */
 				#define ATTR_ALWAYS_INLINE          __attribute__ ((always_inline))
-				
+
 				/** Indicates that the specified function is pure, in that it has no side-effects other than global
 				 *  or parameter variable access.
 				 */
 				#define ATTR_PURE                   __attribute__ ((pure))
-				
+
 				/** Indicates that the specified function is constant, in that it has no side effects other than
 				 *  parameter access.
 				 */
 				#define ATTR_CONST                  __attribute__ ((const))
-				
+
 				/** Marks a given function as deprecated, which produces a warning if the function is called. */
 				#define ATTR_DEPRECATED             __attribute__ ((deprecated))
-				
+
 				/** Marks a function as a weak reference, which can be overridden by other functions with an
 				 *  identical name (in which case the weak reference is discarded at link time).
 				 */
 				#define ATTR_WEAK                   __attribute__ ((weak))
-				
+
 				/** Forces the compiler to not automatically zero the given global variable on startup, so that the
 				 *  current RAM contents is retained. Under most conditions this value will be random due to the
 				 *  behaviour of volatile memory once power is removed, but may be used in some specific circumstances,
@@ -127,7 +127,7 @@
 			 *  \param[in] SectionIndex  Initialization section number where the function should be placed.
 			 */
 			#define ATTR_INIT_SECTION(SectionIndex) __attribute__ ((naked, section (".init" #SectionIndex )))
-			
+
 			/** Marks a function as an alias for another function.
 			 *
 			 *  \param[in] Func  Name of the function which the given function name should alias.

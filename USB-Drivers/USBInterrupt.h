@@ -46,7 +46,7 @@
 		#include <avr/interrupt.h>
 		#include <util/atomic.h>
 		#include <stdbool.h>
-		
+
 	/* Enable C linkage for C++ Compilers: */
 		#if defined(__cplusplus)
 			extern "C" {
@@ -56,7 +56,7 @@
 		#if !defined(__INCLUDE_FROM_USB_DRIVER)
 			#error Do not include this file directly. Include LUFA/Drivers/USB/USB.h instead.
 		#endif
-		
+
 	/* Private Interface - For use in library only: */
 	#if !defined(__DOXYGEN__)
 		/* Macros: */
@@ -91,12 +91,12 @@
 			#include "USBMode.h"
 			#include "Events.h"
 			#include "USBController.h"
-	
+
 		/* Function Prototypes: */
 			void USB_INT_ClearAllInterrupts(void);
 			void USB_INT_DisableAllInterrupts(void);
 	#endif
-	
+
 	/* Disable C linkage for C++ Compilers: */
 		#if defined(__cplusplus)
 			}

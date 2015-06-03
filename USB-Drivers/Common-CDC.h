@@ -78,7 +78,7 @@
 
 		/** CDC class-specific request to retrieve an encapsulated command response from the device. */
 		#define REQ_GetEncapsulatedResponse      0x01
-		
+
 		/** Notification type constant for a change in the virtual serial port handshake line states, for
 		 *  use with a USB_Notification_Header_t notification structure when sent to the host via the CDC 
 		 *  notification endpoint.
@@ -94,7 +94,7 @@
 		 *  from the host, to indicate that theRTS line state should be high.
 		 */
 		#define CDC_CONTROL_LINE_OUT_RTS         (1 << 1)
-		
+
 		/** Mask for the DCD handshake line for use with the a NOTIF_SerialState class-specific notification
 		 *  from the device to the host, to indicate that the DCD line state is currently high.
 		 */
@@ -129,7 +129,7 @@
 		 *  to indicate that a data overrun error has occurred on the virtual serial port.
 		 */
 		#define CDC_CONTROL_LINE_IN_OVERRUNERROR (1 << 6)
-		
+
 		/** Macro to define a CDC class-specific functional descriptor. CDC functional descriptors have a
 		 *  uniform structure but variable sized data payloads, thus cannot be represented accurately by
 		 *  a single typedef struct. A macro is used instead so that functional descriptors can be created
@@ -153,7 +153,7 @@
 			CDC_LINEENCODING_OneAndAHalfStopBits = 1, /**< Each frame contains one and a half stop bits. */
 			CDC_LINEENCODING_TwoStopBits         = 2, /**< Each frame contains two stop bits. */
 		};
-		
+
 		/** Enum for the possible line encoding parity settings of a virtual serial port. */
 		enum CDC_LineEncodingParity_t
 		{
@@ -168,7 +168,7 @@
 		#if defined(__cplusplus)
 			}
 		#endif
-		
+
 #endif
 
 /** @} */

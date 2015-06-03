@@ -52,11 +52,11 @@
 
 	/* Includes: */
 		#include <stdint.h>
-		
+
 		#include "Common-Common.h"
 		#include "USBMode.h"
 		#include "StdDescriptors.h"
-		
+
 	/* Enable C linkage for C++ Compilers: */
 		#if defined(__cplusplus)
 			extern "C" {
@@ -66,8 +66,8 @@
 		#if !defined(__INCLUDE_FROM_USB_DRIVER)
 			#error Do not include this file directly. Include LUFA/Drivers/USB/USB.h instead.
 		#endif
-		
-	/* Public Interface - May be used in end-application: */	
+
+	/* Public Interface - May be used in end-application: */
 		/* Macros: */
 			/** Mask for determining the type of an endpoint from an endpoint descriptor. This should then be compared
 			 *  with the EP_TYPE_* masks to determine the exact type of the endpoint.
@@ -107,7 +107,7 @@
 			 *  values can be accessed in the \ref USB_DescriptorTypes_t enum.
 			 */
 			#define DESCRIPTOR_TYPE(DescriptorPtr)    DESCRIPTOR_CAST(DescriptorPtr, USB_Descriptor_Header_t).Type
-			
+
 			/** Returns the descriptor's size, expressed as the 8-bit value indicating the number of bytes. */
 			#define DESCRIPTOR_SIZE(DescriptorPtr)    DESCRIPTOR_CAST(DescriptorPtr, USB_Descriptor_Header_t).Size
 
@@ -118,7 +118,7 @@
 			 *  \see \ref USB_GetNextDescriptorComp function for more details.
 			 */
 			typedef uint8_t (* ConfigComparatorPtr_t)(void*);
-			
+
 		/* Enums: */
 			/** Enum for the possible return codes of the \ref USB_Host_GetDeviceConfigDescriptor() function. */
 			enum USB_Host_GetConfigDescriptor_ErrorCodes_t
@@ -137,7 +137,7 @@
 				                                        */
 				HOST_GETCONFIG_InvalidData      = 6, /**< The device returned invalid configuration descriptor data. */
 			};
-		
+
 			/** Enum for return values of a descriptor comparator function. */
 			enum DSearch_Return_ErrorCodes_t
 			{
@@ -154,7 +154,7 @@
 				DESCRIPTOR_SEARCH_COMP_Fail            = 1, /**< Comparator function returned Descriptor_Search_Fail. */
 				DESCRIPTOR_SEARCH_COMP_EndOfDescriptor = 2, /**< End of configuration descriptor reached before match found. */
 			};
-	
+
 		/* Function Prototypes: */
 			/** Retrieves the configuration descriptor data from an attached device via a standard request into a buffer,
 			 *  including validity and size checking to prevent a buffer overflow.
@@ -270,11 +270,11 @@
 			                                         void** CurrConfigLoc)
 			{
 				uint16_t CurrDescriptorSize = DESCRIPTOR_CAST(*CurrConfigLoc, USB_Descriptor_Header_t).Size;
-				
+
 				*CurrConfigLoc  = ((uint8_t*)*CurrConfigLoc) + CurrDescriptorSize;
 				*BytesRem      -= CurrDescriptorSize;
 			}
-		
+
 	/* Disable C linkage for C++ Compilers: */
 		#if defined(__cplusplus)
 			}

@@ -56,7 +56,7 @@
 		#if !defined(__INCLUDE_FROM_USB_DRIVER)
 			#error Do not include this file directly. Include LUFA/Drivers/USB/USB.h instead.
 		#endif
-		
+
 	/* Public Interface - May be used in end-application: */
 		/* Macros: */
 			/** Mask for the request type parameter, to indicate the direction of the request data (Host to Device
@@ -137,7 +137,7 @@
 			 *  \see \ref CONTROL_REQTYPE_RECIPIENT macro.
 			 */
 			#define REQREC_OTHER               (3 << 0)
-			
+
 			/** Feature indicator for Clear Feature or Set Feature commands. When used in a Clear Feature
 			 *  request this indicates that an endpoint (whose address is given elsewhere in the request
 			 *  should have its stall condition cleared. If used in a similar manner inside a Set Feature

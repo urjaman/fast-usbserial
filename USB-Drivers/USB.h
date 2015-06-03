@@ -139,10 +139,10 @@
  *
  *  \subsection SSec_ClassDriverDevice Device Mode Class Drivers
  *  Implementing a Device Mode Class Driver in a user application requires a number of steps to be followed. Firstly,
- *  the module configuration and state structure must be added to the project source. These structures are named in a 
+ *  the module configuration and state structure must be added to the project source. These structures are named in a
  *  similar manner between classes, that of <i>USB_ClassInfo_<b>{Class Name}</b>_Device_t</i>, and are used to hold the
- *  complete state and configuration for each class instance. Multiple class instances is where the power of the class 
- *  drivers lie; multiple interfaces of the same class simply require more instances of the Class Driver's ClassInfo 
+ *  complete state and configuration for each class instance. Multiple class instances is where the power of the class
+ *  drivers lie; multiple interfaces of the same class simply require more instances of the Class Driver's ClassInfo
  *  structure.
  *
  *  Inside the ClassInfo structure lies two sections, a <i>Config</i> section, and a <i>State</i> section. The Config
@@ -161,7 +161,7 @@
  *      .Config =
  *          {
  *              .StreamingInterfaceNumber = 1,
- *              
+ *
  *              .DataINEndpointNumber     = 1,
  *              .DataINEndpointSize       = 256,
  *          },
@@ -181,12 +181,12 @@
  *  void EVENT_USB_Device_ConfigurationChanged(void)
  *  {
  *  	LEDs_SetAllLEDs(LEDMASK_USB_READY);
- *  	
+ *
  *  	if (!(Audio_Device_ConfigureEndpoints(&My_Audio_Interface)))
  *  	  LEDs_SetAllLEDs(LEDMASK_USB_ERROR);
  *  }
  *  \endcode
- * 
+ *
  *  Once initialized, it is important to maintain the class driver's state by repeatedly calling the Class Driver's
  *  <i><b>{Class Name}</b>_Device_USBTask()</i> function in the main program loop. The exact implementation of this
  *  function varies between class drivers, and can be used for any internal class driver purpose to maintain each
@@ -197,13 +197,13 @@
  *  int main(void)
  *  {
  *      SetupHardware();
- *  
+ *
  *      LEDs_SetAllLEDs(LEDMASK_USB_NOTREADY);
- *  
+ *
  *      for (;;)
  *      {
  *          Create_And_Process_Samples();
- *      
+ *
  *          Audio_Device_USBTask(&My_Audio_Interface);
  *          USB_USBTask();
  *      }
@@ -238,10 +238,10 @@
  *
  *  \subsection SSec_ClassDriverHost Host Mode Class Drivers
  *  Implementing a Host Mode Class Driver in a user application requires a number of steps to be followed. Firstly,
- *  the module configuration and state structure must be added to the project source. These structures are named in a 
+ *  the module configuration and state structure must be added to the project source. These structures are named in a
  *  similar manner between classes, that of <i>USB_ClassInfo_<b>{Class Name}</b>_Host_t</i>, and are used to hold the
- *  complete state and configuration for each class instance. Multiple class instances is where the power of the class 
- *  drivers lie; multiple interfaces of the same class simply require more instances of the Class Driver's ClassInfo 
+ *  complete state and configuration for each class instance. Multiple class instances is where the power of the class
+ *  drivers lie; multiple interfaces of the same class simply require more instances of the Class Driver's ClassInfo
  *  structure.
  *
  *  Inside the ClassInfo structure lies two sections, a <i>Config</i> section, and a <i>State</i> section. The Config
@@ -261,7 +261,7 @@
  *          {
  *              .DataINPipeNumber       = 1,
  *              .DataINPipeDoubleBank   = false,
- *              
+ *
  *              .DataOUTPipeNumber      = 2,
  *              .DataOUTPipeDoubleBank  = false,
  *          },
@@ -281,7 +281,7 @@
  *      {
  *          case HOST_STATE_Addressed:
  *              LEDs_SetAllLEDs(LEDMASK_USB_ENUMERATING);
- *          
+ *
  *              uint16_t ConfigDescriptorSize;
  *              uint8_t  ConfigDescriptorData[512];
  *
@@ -321,16 +321,16 @@
  *  int main(void)
  *  {
  *      SetupHardware();
- *  
+ *
  *      LEDs_SetAllLEDs(LEDMASK_USB_NOTREADY);
- *  
+ *
  *      for (;;)
  *      {
  *          switch (USB_HostState)
  *          {
  *             // Host state machine handling here
- *          } 
- *      
+ *          }
+ *
  *          MIDI_Host_USBTask(&My_Audio_Interface);
  *          USB_USBTask();
  *      }
@@ -360,7 +360,7 @@
 	/* Includes: */
 		#include "USBMode.h"
 
-	/* Preprocessor Checks: */		
+	/* Preprocessor Checks: */
 		#if (!defined(USB_SERIES_2_AVR) && !defined(USB_SERIES_4_AVR) && \
 		     !defined(USB_SERIES_6_AVR) && !defined(USB_SERIES_7_AVR))
 			#error The currently selected AVR model is not supported under the USB component of the LUFA library.

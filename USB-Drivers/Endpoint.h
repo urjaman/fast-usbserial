@@ -52,20 +52,20 @@
  *
  *  Functions, macros, variables, enums and types related to data reading and writing from and to endpoints.
  */
- 
-/** \ingroup Group_EndpointRW  
+
+/** \ingroup Group_EndpointRW
  *  @defgroup Group_EndpointPrimitiveRW Read/Write of Primitive Data Types
  *
  *  Functions, macros, variables, enums and types related to data reading and writing of primitive data types
  *  from and to endpoints.
- */ 
+ */
 
-/** \ingroup Group_EndpointRW  
+/** \ingroup Group_EndpointRW
  *  @defgroup Group_EndpointStreamRW Read/Write of Multi-Byte Streams
  *
  *  Functions, macros, variables, enums and types related to data reading and writing of data streams from
  *  and to endpoints.
- */ 
+ */
 
 /** @defgroup Group_EndpointPacketManagement Endpoint Packet Management
  *
@@ -90,7 +90,7 @@
 			#include "StreamCallbacks.h"
 		#endif
 
-		
+
 	/* Enable C linkage for C++ Compilers: */
 		#if defined(__cplusplus)
 			extern "C" {
@@ -100,7 +100,7 @@
 		#if !defined(__INCLUDE_FROM_USB_DRIVER)
 			#error Do not include this file directly. Include LUFA/Drivers/USB/USB.h instead.
 		#endif
-		
+
 	/* Public Interface - May be used in end-application: */
 		/* Macros: */
 			/** Endpoint data direction mask for \ref Endpoint_ConfigureEndpoint(). This indicates that the endpoint
@@ -126,7 +126,7 @@
 			 *  accesses the second bank.
 			 */
 			#define ENDPOINT_BANK_DOUBLE                  (1 << EPBK0)
-			
+
 			/** Endpoint address for the default control endpoint, which always resides in address 0. This is
 			 *  defined for convenience to give more readable code when used with the endpoint macros.
 			 */
@@ -138,7 +138,7 @@
 				 */
 				#define ENDPOINT_CONTROLEP_DEFAULT_SIZE   8
 			#endif
-			
+
 			/** Endpoint number mask, for masking against endpoint addresses to retrieve the endpoint's
 			 *  numerical address in the device.
 			 */
@@ -153,17 +153,17 @@
 			 *  bank size in the device.
 			 */
 			#define ENDPOINT_EPSIZE_MASK                  0x7F
-			
+
 			/** Maximum size in bytes of a given endpoint.
 			 *
 			 *  \param[in] n  Endpoint number, a value between 0 and (ENDPOINT_TOTAL_ENDPOINTS - 1)
-			 */				
+			 */
 			#define ENDPOINT_MAX_SIZE(n)                  _ENDPOINT_GET_MAXSIZE(n)
 
 			/** Indicates if the given endpoint supports double banking.
 			 *
 			 *  \param[in] n  Endpoint number, a value between 0 and (ENDPOINT_TOTAL_ENDPOINTS - 1)
-			 */				
+			 */
 			#define ENDPOINT_DOUBLEBANK_SUPPORTED(n)      _ENDPOINT_GET_DOUBLEBANK(n)
 
 			#if !defined(CONTROL_ONLY_DEVICE)
@@ -203,7 +203,7 @@
 				                                                 *   \ref USB_STREAM_TIMEOUT_MS macro.
 				                                                 */
 			};
-		
+
 			/** Enum for the possible error return codes of the Endpoint_*_Stream_* functions.
 			 *
 			 *  \ingroup Group_EndpointStreamRW
@@ -229,7 +229,7 @@
 			                                               *   aborted the transfer early.
 				                                           */
 			};
-			
+
 			/** Enum for the possible error return codes of the Endpoint_*_Control_Stream_* functions..
 			 *
 			 *  \ingroup Group_EndpointStreamRW
@@ -268,7 +268,7 @@
 					return UEBCLX;
 				#endif
 			}
-		
+
 			/** Get the endpoint address of the currently selected endpoint. This is typically used to save
 			 *  the currently selected endpoint number so that it can be restored after another endpoint has
 			 *  been manipulated.
@@ -284,7 +284,7 @@
 					return ENDPOINT_CONTROLEP;
 				#endif
 			}
-			
+
 			/** Selects the given endpoint number. If the address from the device descriptors is used, the
 			 *  value should be masked with the \ref ENDPOINT_EPNUM_MASK constant to extract only the endpoint
 			 *  number (and discarding the endpoint direction bit).
@@ -299,9 +299,9 @@
 			{
 				#if !defined(CONTROL_ONLY_DEVICE)
 					UENUM = EndpointNumber;
-				#endif			
+				#endif
 			}
-			
+
 			/** Resets the endpoint bank FIFO. This clears all the endpoint banks and resets the USB controller's
 			 *  In and Out pointers to the bank's contents.
 			 *
@@ -313,7 +313,7 @@
 				UERST = (1 << EndpointNumber);
 				UERST = 0;
 			}
-			
+
 			/** Enables the currently selected endpoint so that data can be sent and received through it to
 			 *  and from a host.
 			 *
@@ -333,7 +333,7 @@
 			{
 				UECONX &= ~(1 << EPEN);
 			}
-			
+
 			/** Determines if the currently selected endpoint is enabled, but not necessarily configured.
 			 *
 			 * \return Boolean True if the currently selected endpoint is enabled, false otherwise.
@@ -343,7 +343,7 @@
 			{
 				return ((UECONX & (1 << EPEN)) ? true : false);
 			}
-			
+
 			/** Determines if the currently selected endpoint may be read from (if data is waiting in the endpoint
 			 *  bank and the endpoint is an OUT direction, or if the bank is not yet full if the endpoint is an IN
 			 *  direction). This function will return false if an error has occurred in the endpoint, if the endpoint
@@ -359,7 +359,7 @@
 			{
 				return ((UEINTX & (1 << RWAL)) ? true : false);
 			}
-			
+
 			/** Determines if the currently selected endpoint is configured.
 			 *
 			 *  \return Boolean true if the currently selected endpoint has been configured, false otherwise.
@@ -369,7 +369,7 @@
 			{
 				return ((UESTA0X & (1 << CFGOK)) ? true : false);
 			}
-			
+
 			/** Returns a mask indicating which INTERRUPT type endpoints have interrupted - i.e. their
 			 *  interrupt duration has elapsed. Which endpoints have interrupted can be determined by
 			 *  masking the return value against (1 << {Endpoint Number}).
@@ -381,7 +381,7 @@
 			{
 				return UEINT;
 			}
-			
+
 			/** Determines if the specified endpoint number has interrupted (valid only for INTERRUPT type
 			 *  endpoints).
 			 *
@@ -394,7 +394,7 @@
 			{
 				return ((UEINT & (1 << EndpointNumber)) ? true : false);
 			}
-			
+
 			/** Determines if the selected IN endpoint is ready for a new packet.
 			 *
 			 *  \ingroup Group_EndpointPacketManagement
@@ -406,7 +406,7 @@
 			{
 				return ((UEINTX & (1 << TXINI))  ? true : false);
 			}
-			
+
 			/** Determines if the selected OUT endpoint has received new packet.
 			 *
 			 *  \ingroup Group_EndpointPacketManagement
@@ -418,7 +418,7 @@
 			{
 				return ((UEINTX & (1 << RXOUTI)) ? true : false);
 			}
-			
+
 			/** Determines if the current CONTROL type endpoint has received a SETUP packet.
 			 *
 			 *  \ingroup Group_EndpointPacketManagement
@@ -430,20 +430,20 @@
 			{
 				return ((UEINTX & (1 << RXSTPI)) ? true : false);
 			}
-			
+
 			/** Clears a received SETUP packet on the currently selected CONTROL type endpoint, freeing up the
 			 *  endpoint for the next packet.
 			 *
 			 *  \ingroup Group_EndpointPacketManagement
 			 *
-			 *  \note This is not applicable for non CONTROL type endpoints. 
+			 *  \note This is not applicable for non CONTROL type endpoints.
 			 */
 			static inline void Endpoint_ClearSETUP(void) ATTR_ALWAYS_INLINE;
 			static inline void Endpoint_ClearSETUP(void)
 			{
 				UEINTX &= ~(1 << RXSTPI);
 			}
-			
+
 			/** Sends an IN packet to the host on the currently selected endpoint, freeing up the endpoint for the
 			 *  next packet and switching to the alternative endpoint bank if double banked.
 			 *
@@ -458,7 +458,7 @@
 					UEINTX &= ~(1 << TXINI);
 				#endif
 			}
-			
+
 			/** Acknowledges an OUT packet to the host on the currently selected endpoint, freeing up the endpoint
 			 *  for the next packet and switching to the alternative endpoint bank if double banked.
 			 *
@@ -470,10 +470,10 @@
 				#if !defined(CONTROL_ONLY_DEVICE)
 					UEINTX &= ~((1 << RXOUTI) | (1 << FIFOCON));
 				#else
-					UEINTX &= ~(1 << RXOUTI);	
+					UEINTX &= ~(1 << RXOUTI);
 				#endif
 			}
-			
+
 			/** Stalls the current endpoint, indicating to the host that a logical problem occurred with the
 			 *  indicated endpoint and that the current transfer sequence should be aborted. This provides a
 			 *  way for devices to indicate invalid commands to the host so that the current transfer can be
@@ -490,7 +490,7 @@
 			{
 				UECONX |= (1 << STALLRQ);
 			}
-			
+
 			/** Clears the STALL condition on the currently selected endpoint.
 			 *
 			 *  \ingroup Group_EndpointPacketManagement
@@ -500,7 +500,7 @@
 			{
 				UECONX |= (1 << STALLRQC);
 			}
-			
+
 			/** Determines if the currently selected endpoint is stalled, false otherwise.
 			 *
 			 *  \ingroup Group_EndpointPacketManagement
@@ -512,14 +512,14 @@
 			{
 				return ((UECONX & (1 << STALLRQ)) ? true : false);
 			}
-			
+
 			/** Resets the data toggle of the currently selected endpoint. */
 			static inline void Endpoint_ResetDataToggle(void) ATTR_ALWAYS_INLINE;
 			static inline void Endpoint_ResetDataToggle(void)
 			{
 				UECONX |= (1 << RSTDT);
 			}
-			
+
 			/** Determines the currently selected endpoint's direction.
 			 *
 			 *  \return The currently selected endpoint's direction, as a ENDPOINT_DIR_* mask.
@@ -572,11 +572,11 @@
 			static inline void Endpoint_Discard_Byte(void)
 			{
 				uint8_t Dummy;
-				
+
 				Dummy = UEDATX;
 				(void)Dummy;
 			}
-			
+
 			/** Reads two bytes from the currently selected endpoint's bank in little endian format, for OUT
 			 *  direction endpoints.
 			 *
@@ -592,10 +592,10 @@
 					uint16_t Word;
 					uint8_t  Bytes[2];
 				} Data;
-				
+
 				Data.Bytes[0] = UEDATX;
 				Data.Bytes[1] = UEDATX;
-			
+
 				return Data.Word;
 			}
 
@@ -614,10 +614,10 @@
 					uint16_t Word;
 					uint8_t  Bytes[2];
 				} Data;
-				
+
 				Data.Bytes[1] = UEDATX;
 				Data.Bytes[0] = UEDATX;
-			
+
 				return Data.Word;
 			}
 
@@ -634,7 +634,7 @@
 				UEDATX = (Word & 0xFF);
 				UEDATX = (Word >> 8);
 			}
-			
+
 			/** Writes two bytes to the currently selected endpoint's bank in big endian format, for IN
 			 *  direction endpoints.
 			 *
@@ -657,7 +657,7 @@
 			static inline void Endpoint_Discard_Word(void)
 			{
 				uint8_t Dummy;
-				
+
 				Dummy = UEDATX;
 				Dummy = UEDATX;
 				(void)Dummy;
@@ -678,12 +678,12 @@
 					uint32_t DWord;
 					uint8_t  Bytes[4];
 				} Data;
-				
+
 				Data.Bytes[0] = UEDATX;
 				Data.Bytes[1] = UEDATX;
 				Data.Bytes[2] = UEDATX;
 				Data.Bytes[3] = UEDATX;
-			
+
 				return Data.DWord;
 			}
 
@@ -702,12 +702,12 @@
 					uint32_t DWord;
 					uint8_t  Bytes[4];
 				} Data;
-				
+
 				Data.Bytes[3] = UEDATX;
 				Data.Bytes[2] = UEDATX;
 				Data.Bytes[1] = UEDATX;
 				Data.Bytes[0] = UEDATX;
-			
+
 				return Data.DWord;
 			}
 
@@ -726,7 +726,7 @@
 				UEDATX = (DWord >> 16);
 				UEDATX = (DWord >> 24);
 			}
-			
+
 			/** Writes four bytes to the currently selected endpoint's bank in big endian format, for IN
 			 *  direction endpoints.
 			 *
@@ -743,7 +743,7 @@
 				UEDATX = (DWord &  0xFF);
 			}
 
-			/** Discards four bytes from the currently selected endpoint's bank, for OUT direction endpoints.	
+			/** Discards four bytes from the currently selected endpoint's bank, for OUT direction endpoints.
 			 *
 			 *  \ingroup Group_EndpointPrimitiveRW
 			 */
@@ -751,7 +751,7 @@
 			static inline void Endpoint_Discard_DWord(void)
 			{
 				uint8_t Dummy;
-				
+
 				Dummy = UEDATX;
 				Dummy = UEDATX;
 				Dummy = UEDATX;
@@ -787,7 +787,7 @@
 			#else
 				#define __CALLBACK_PARAM
 			#endif
-		
+
 			/** Configures the specified endpoint number with the given endpoint type, direction, bank size
 			 *  and banking mode. Endpoints should be allocated in ascending order by their address in the
 			 *  device (i.e. endpoint 1 should be configured before endpoint 2 and so on) to prevent fragmentation
@@ -827,7 +827,7 @@
 			 *  \return A value from the \ref Endpoint_WaitUntilReady_ErrorCodes_t enum.
 			 */
 			uint8_t Endpoint_WaitUntilReady(void);
-			
+
 			/** Completes the status stage of a control transfer on a CONTROL type endpoint automatically,
 			 *  with respect to the data direction. This is a convenience function which can be used to
 			 *  simplify user control request handling.
@@ -1005,7 +1005,7 @@
 			uint8_t Endpoint_Read_EStream_LE(void* Buffer,
 			                                 uint16_t Length
 			                                 __CALLBACK_PARAM) ATTR_NON_NULL_PTR_ARG(1);
-			
+
 			/** Reads the given number of bytes from the endpoint from the given buffer in big endian,
 			 *  discarding fully read packets from the host as needed. The last packet is not automatically
 			 *  discarded once the remaining bytes has been read; the user is responsible for manually
@@ -1356,7 +1356,7 @@
 		#if defined(__cplusplus)
 			}
 		#endif
-		
+
 #endif
 
 /** @} */

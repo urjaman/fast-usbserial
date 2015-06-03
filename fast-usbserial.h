@@ -33,8 +33,8 @@
  *  Header file for Arduino-usbserial.c.
  */
 
-#ifndef _ARDUINO_USBSERIAL_H_
-#define _ARDUINO_USBSERIAL_H_
+#ifndef _FAST_USBSERIAL_H_
+#define _FAST_USBSERIAL_H_
 
 	/* Includes: */
 		#include <avr/io.h>
@@ -44,25 +44,24 @@
 
 		#include "Descriptors.h"
 
-		#include "Version.h"
 		#include "Board-LEDs.h"
 		#include "Serial.h"
 		#include "USB.h"
 		#include "SimpleCDC.h"
-		
+
 	/* Macros: */
 		/** LED mask for the library LED driver, to indicate TX activity. */
 		#define LEDMASK_TX               LEDS_LED1
 
 		/** LED mask for the library LED driver, to indicate RX activity. */
 		#define LEDMASK_RX               LEDS_LED2
-		
+
 		/** LED mask for the library LED driver, to indicate that an error has occurred in the USB interface. */
 		#define LEDMASK_ERROR            (LEDS_LED1 | LEDS_LED2)
-		
+
 		/** LED mask for the library LED driver, to indicate that the USB interface is busy. */
-		#define LEDMASK_BUSY             (LEDS_LED1 | LEDS_LED2)		
-		
+		#define LEDMASK_BUSY             (LEDS_LED1 | LEDS_LED2)
+
 	/* Function Prototypes: */
 		void SetupHardware(void);
 
@@ -70,8 +69,8 @@
 		void EVENT_USB_Device_Disconnect(void);
 		void EVENT_USB_Device_ConfigurationChanged(void);
 		void EVENT_USB_Device_UnhandledControlRequest(void);
-		
-		void EVENT_CDC_Device_LineEncodingChanged(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo);
-		void EVENT_CDC_Device_ControLineStateChanged(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo);		
 
-#endif /* _ARDUINO_USBSERIAL_H_ */
+		void EVENT_CDC_Device_LineEncodingChanged(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo);
+		void EVENT_CDC_Device_ControLineStateChanged(USB_ClassInfo_CDC_Device_t* const CDCInterfaceInfo);
+
+#endif /* _FAST_USBSERIAL_H_ */

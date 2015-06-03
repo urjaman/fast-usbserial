@@ -45,7 +45,7 @@
 		#include <avr/interrupt.h>
 		#include <stdint.h>
 		#include <stdbool.h>
-		
+
 		#include "USBController.h"
 		#include "Events.h"
 		#include "StdRequestType.h"
@@ -65,7 +65,7 @@
 		#if !defined(__INCLUDE_FROM_USB_DRIVER)
 			#error Do not include this file directly. Include LUFA/Drivers/USB/USB.h instead.
 		#endif
-		
+
 	/* Public Interface - May be used in end-application: */
 		/* Global Variables: */
 			/** Indicates if the USB interface is currently initialized but not necessarily connected to a host
@@ -84,7 +84,7 @@
 			 *  \ingroup Group_USBManagement
 			 */
 			 extern USB_Request_Header_t USB_ControlRequest;
-			
+
 			#if defined(USB_CAN_BE_HOST) || defined(__DOXYGEN__)
 				#if !defined(HOST_STATE_AS_GPIOR) || defined(__DOXYGEN__)
 					/** Indicates the current host state machine state. When in host mode, this indicates the state
@@ -179,21 +179,21 @@
 				#if defined(USB_CAN_BE_HOST)
 					static void USB_HostTask(void);
 				#endif
-				
+
 				#if defined(USB_CAN_BE_DEVICE)
 					static void USB_DeviceTask(void);
 				#endif
 			#endif
-			
+
 		/* Macros: */
 			#define HOST_TASK_NONBLOCK_WAIT(duration, nextstate) MACROS{ USB_HostState = HOST_STATE_WaitForDevice; \
 			                                                             WaitMSRemaining = (duration);             \
 			                                                             PostWaitState = (nextstate);        }MACROE
 	#endif
-	
+
 	/* Disable C linkage for C++ Compilers: */
 		#if defined(__cplusplus)
 			}
 		#endif
-		
+
 #endif
