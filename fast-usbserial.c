@@ -291,7 +291,7 @@ void EVENT_CDC_Device_LineEncodingChanged(USB_ClassInfo_CDC_Device_t* const CDCI
 		sreg = 0;
 	} else {
 		brr = SERIAL_2X_UBBRVAL(CDCInterfaceInfo->State.LineEncoding.BaudRateBPS);
-		if (brr&1) { // No need U2X
+		if ((brr&1)||(brr>4095)) { // No need U2X or cant have U2X.
 			brr = brr>>1;
 			sreg = 0;
 		}
