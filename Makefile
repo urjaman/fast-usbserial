@@ -249,6 +249,8 @@ CFLAGS += -Wa,-adhlns=$(<:%.c=$(OBJDIR)/%.lst)
 CFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
 CFLAGS += $(CSTANDARD)
 CFLAGS += -flto -flto-partition=none
+#This reserves the registers r2 - r5 for the UART ISRs
+CFLAGS += -ffixed-r2 -ffixed-r3 -ffixed-r4 -ffixed-r5
 
 #---------------- Compiler Options C++ ----------------
 #  -g*:          generate debugging information
