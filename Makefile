@@ -351,6 +351,7 @@ LDFLAGS += -Wl,--section-start,.data=0x800280
 LDFLAGS += $(EXTMEMOPTS)
 LDFLAGS += $(patsubst %,-L%,$(EXTRALIBDIRS))
 LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
+#LDFLAGS += -save-temps
 #LDFLAGS += -T linker_script.x
 
 
