@@ -87,17 +87,9 @@ int main(void)
 	sei();
 	DEBUGB(0xE1);
 	for (;;) {
-		/** Pulse generation counters to keep track of the number of milliseconds remaining for each pulse type */
-		struct {
-			uint8_t TxLEDPulse; /**< Milliseconds remaining for data Tx LED pulse */
-			uint8_t RxLEDPulse; /**< Milliseconds remaining for data Rx LED pulse */
-		} PulseMSRemaining = { 0,0 };
-		uint8_t USARTtoUSB_rdp = 0;
-		uint8_t last_cnt = 0;
 		/* We let the TX continue (flush buffer) if it was enabled before we got unconfigured. */
 		ATOMIC_BLOCK(ATOMIC_FORCEON) {
 			UCSR1B &= ~_BV(RXCIE1);
-			USARTtoUSB_wrp = 0;
 		}
 		/* But disable RX since there is no longer a PC listening. */
 		Endpoint_SelectEndpoint(ENDPOINT_CONTROLEP);
@@ -111,6 +103,14 @@ int main(void)
 		}
 		TIFR0 = _BV(TOV0);
 		TIFR1 = _BV(OCF1A);
+
+		/** Pulse generation counters to keep track of the number of milliseconds remaining for each pulse type */
+		struct {
+			uint8_t TxLEDPulse; /**< Milliseconds remaining for data Tx LED pulse */
+			uint8_t RxLEDPulse; /**< Milliseconds remaining for data Rx LED pulse */
+		} PulseMSRemaining = { 0,0 };
+		uint8_t last_cnt = 0;
+		uint8_t USARTtoUSB_rdp = USARTtoUSB_wrp; /* A single in is smaller than out and ldi (to clear) */
 		do {
 			uint8_t USBtoUSART_free = (USB2USART_BUFLEN-1) - ( (USBtoUSART_wrp - USBtoUSART_rdp) & (USB2USART_BUFLEN-1) );
 			uint8_t rxd;
