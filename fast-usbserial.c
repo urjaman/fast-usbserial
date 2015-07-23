@@ -82,6 +82,8 @@ int main(void)
 	PORTB |= _BV(4);
 	DDRB |= _BV(4);
 #endif
+	/* Clear the GPIOR-based TX register. */
+	USBtoUSART_rdp = 0;
 	sei();
 	DEBUGB(0xE1);
 	for (;;) {
@@ -92,18 +94,21 @@ int main(void)
 		} PulseMSRemaining = { 0,0 };
 		uint8_t USARTtoUSB_rdp = 0;
 		uint8_t last_cnt = 0;
-		cli();
-		UCSR1B &= ~_BV(RXCIE1);
-		USARTtoUSB_wrp = 0;
-		USBtoUSART_wrp = 0;
-		USBtoUSART_rdp = 0;
-		sei();
+		/* We let the TX continue (flush buffer) if it was enabled before we got unconfigured. */
+		ATOMIC_BLOCK(ATOMIC_FORCEON) {
+			UCSR1B &= ~_BV(RXCIE1);
+			USARTtoUSB_wrp = 0;
+		}
+		/* But disable RX since there is no longer a PC listening. */
 		Endpoint_SelectEndpoint(ENDPOINT_CONTROLEP);
 		do {
 			if (Endpoint_IsSETUPReceived())
 			  USB_Device_ProcessControlRequest();
 		} while (USB_DeviceState != DEVICE_STATE_Configured);
-		UCSR1B |= _BV(RXCIE1);
+		/* TX might still be transmitting, so be safe when re-enabling RX ISR. */
+		ATOMIC_BLOCK(ATOMIC_FORCEON) {
+			UCSR1B |= _BV(RXCIE1);
+		}
 		TIFR0 = _BV(TOV0);
 		TIFR1 = _BV(OCF1A);
 		do {
