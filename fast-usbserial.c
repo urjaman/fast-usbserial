@@ -131,7 +131,7 @@ int main(void)
 					DEBUGB(d);
 				} while (--rxd);
 				Endpoint_ClearOUT();
-				USBtoUSART_wrp = tmp & (USB2USART_BUFLEN-1);
+				USBtoUSART_wrp = tmp & 0xFF; /* ASM already clears the lower byte to & 0x7F. */
 				UCSR1B = (_BV(RXCIE1) | _BV(TXEN1) | _BV(RXEN1) | _BV(UDRIE1));
 				goto rxled;
 			} else if (USBtoUSART_wrp != USBtoUSART_rdp) {
