@@ -149,11 +149,11 @@ int main(void)
 			uint8_t flush_overflow = TIFR1 & _BV(OCF1A);
 			if (flush_overflow) TIFR1 = _BV(OCF1A);
 			/* Check if the UART receive buffer flush timer has expired or the buffer is nearly full */
-			if ( ((cnt >= CDC_IN_EPSIZE) || (flush_overflow && cnt)) &&
+			if ( ((cnt >= CDC_IN_EPSIZE-1) || (flush_overflow && cnt)) &&
 				(CDC_Device_SendByte_Prep(&VirtualSerial_CDC_Interface) == 0) ) {
 				/* Endpoint will always be empty since we're the only writer
 				 * and we flush after every write. */
-				uint8_t txcnt = CDC_IN_EPSIZE;
+				uint8_t txcnt = CDC_IN_EPSIZE-1;
 				if (txcnt > cnt) txcnt = cnt;
 				last_cnt -= txcnt;
 				DEBUGB(0xE2);
