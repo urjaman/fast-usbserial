@@ -92,6 +92,7 @@
 				UCSR1A = (DoubleSpeed ? (1 << U2X1) : 0);
 				UCSR1B = ((1 << TXEN1)  | (1 << RXEN1));
 				
+				PORTD |= (1 << 3);
 				DDRD  |= (1 << 3);
 				PORTD |= (1 << 2);
 			}
