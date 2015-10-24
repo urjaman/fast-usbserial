@@ -3,6 +3,12 @@ was only tested on the ATmega16U2, and the below
 readme is obsolete. On my 16U2 it is hit the 16U2 reset
 with pliers and sudo make dfu :P
 
+For better instructions (and an image) of how to flash your 16U2 / 8U2:
+http://forum.arduino.cc/index.php?topic=52076.msg373873#msg373873
+Also note that if your board is new enough (atleast the ones with 16U2 are) you dont
+need to touch/ground the HWB (point near cap), just reset.
+So you might as well see if it appears as DFU device (lsusb before and after) after only the reset.
+
 To setup the project and upload the Arduino usbserial application firmware to an ATMEGA8U2 using the Arduino USB DFU bootloader:
 2. set ARDUINO_MODEL_PID in the makefile as appropriate
 3. do "make clean; make"
